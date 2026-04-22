@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriCare by Ewan — Your Wellness Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --night:#070d14;--deep:#0b1422;--glass:rgba(15,29,46,0.65);--glass2:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  --sage:#4ecb8c;--sage2:#2da66b;--sage-glow:rgba(78,203,140,0.18);
+  --amber:#f0b155;--amber2:#d4922e;--amber-glow:rgba(240,177,85,0.15);
+  --rose:#e87ea1;--rose-glow:rgba(232,126,161,0.15);--sky:#5ba4f5;
+  --purple:#a78bfa;--purple-glow:rgba(167,139,250,0.15);
+  --text:#e8eef5;--text2:#8fa3b8;--text3:#4d6275;
+  --font-d:'Cormorant Garamond',Georgia,serif;
+  --font-b:'DM Sans',sans-serif;--font-m:'DM Mono',monospace;
+  --r:16px;--r2:24px;--tr:cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{background:var(--night);color:var(--text);font-family:var(--font-b);font-size:15px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;z-index:0;animation:orbF 20s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(78,203,140,0.12),transparent 70%);top:-100px;right:-100px}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(91,164,245,0.1),transparent 70%);bottom:0;left:-150px;animation-delay:-7s}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(240,177,85,0.08),transparent 70%);top:50%;left:50%;animation-delay:-14s}
+@keyframes orbF{0%,100%{opacity:1;transform:translate(0,0)scale(1)}33%{transform:translate(30px,-40px)scale(1.05)}66%{transform:translate(-20px,30px)scale(0.95)}}
+#app{position:relative;z-index:1;max-width:480px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.screen{display:none;flex-direction:column;flex:1;animation:sIn .4s var(--tr)}
+.screen.active{display:flex}
+@keyframes sIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--glass);border:1px solid var(--border);border-radius:var(--r2);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:1.25rem 1.5rem}
+.glow-sage{box-shadow:0 0 40px var(--sage-glow),inset 0 1px 0 rgba(255,255,255,0.06)}
+.glow-purple{box-shadow:0 0 40px var(--purple-glow),inset 0 1px 0 rgba(255,255,255,0.06)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem .75rem}
+.logo{font-family:var(--font-d);font-size:22px;font-weight:300;letter-spacing:.02em;color:var(--text)}
+.logo em{color:var(--sage);font-style:italic}
+.logo-by{font-size:10px;font-family:var(--font-m);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
+.icon-btn{width:38px;height:38px;border-radius:50%;background:var(--glass2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;font-size:15px;color:var(--text2)}
+.clock-chip{font-family:var(--font-m);font-size:11px;color:var(--text3);background:var(--glass2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;letter-spacing:.08em}
+.hero{padding:1rem 1.5rem 1.5rem;text-align:center}
+.hero-glyph{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,rgba(78,203,140,0.15),rgba(91,164,245,0.1));border:1px solid rgba(78,203,140,0.3);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 1rem;box-shadow:0 0 30px rgba(78,203,140,0.2);animation:breathe 4s ease-in-out infinite}
+@keyframes breathe{0%,100%{box-shadow:0 0 30px rgba(78,203,140,0.2)}50%{box-shadow:0 0 50px rgba(78,203,140,0.35)}}
+.hero h1{font-family:var(--font-d);font-size:32px;font-weight:300;line-height:1.2;letter-spacing:-.01em;margin-bottom:.5rem}
+.hero h1 em{color:var(--sage);font-style:italic}
+.hero p{font-size:14px;color:var(--text2);max-width:280px;margin:0 auto}
+.steps{display:flex;align-items:center;padding:0 1.5rem .75rem}
+.sd{width:8px;height:8px;border-radius:50%;background:var(--text3);transition:all .3s}
+.sd.done{background:var(--sage)}
+.sd.active{background:var(--sage);box-shadow:0 0 10px var(--sage);width:24px;border-radius:4px}
+.sl{flex:1;height:1px;background:var(--border);margin:0 4px}
+.sl.done{background:var(--sage2);opacity:.5}
+.fl{font-size:11px;font-family:var(--font-m);color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:block}
+.fi{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;font-size:14px;color:var(--text);font-family:var(--font-b);transition:all .2s;outline:none}
+.fi:focus{border-color:rgba(78,203,140,0.5);background:rgba(78,203,140,0.04);box-shadow:0 0 0 3px rgba(78,203,140,0.08)}
+.fi::placeholder{color:var(--text3)}
+select.fi option{background:var(--deep);color:var(--text)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.choice{padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s;text-align:center;font-size:13px;color:var(--text2);line-height:1.3}
+.choice strong{display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:1px}
+.choice.sel{border-color:var(--sage);background:rgba(78,203,140,0.1);color:var(--sage);box-shadow:0 0 20px rgba(78,203,140,0.12)}
+.choice.sel strong{color:var(--sage)}
+/* GOAL CHIPS */
+.gc{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:20px;font-size:13px;cursor:pointer;margin:3px;transition:all .2s;background:rgba(255,255,255,0.03);color:var(--text2)}
+.gc:hover{border-color:rgba(167,139,250,0.4);background:rgba(167,139,250,0.06)}
+.gc.sel{border-color:var(--purple);background:rgba(167,139,250,0.14);color:var(--purple);box-shadow:0 0 16px var(--purple-glow)}
+.gc .gi{font-size:16px}
+/* COND PILLS */
+.cp{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border:1px solid var(--border);border-radius:20px;font-size:12px;cursor:pointer;margin:3px;transition:all .2s;background:rgba(255,255,255,0.03);color:var(--text2)}
+.cp.sel{border-color:var(--sage);background:rgba(78,203,140,0.12);color:var(--sage)}
+.toast{margin:.75rem 1.5rem;padding:.75rem 1rem;border-radius:var(--r);border-left:3px solid var(--sage);background:rgba(78,203,140,0.06);font-size:13px;color:var(--sage);display:flex;align-items:center;gap:.6rem;animation:tIn .4s var(--tr)}
+@keyframes tIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.ti{font-size:16px;flex-shrink:0}
+.btn{display:block;width:calc(100% - 3rem);margin:1rem 1.5rem .5rem;padding:13px;border:none;border-radius:var(--r);font-size:15px;font-weight:500;font-family:var(--font-b);cursor:pointer;transition:all .25s;letter-spacing:.01em}
+.btn-p{background:linear-gradient(135deg,var(--sage),var(--sage2));color:#fff;box-shadow:0 4px 24px rgba(78,203,140,0.3)}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 6px 32px rgba(78,203,140,0.4)}
+.btn-g{background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text2)}
+.disc{font-size:11px;color:var(--text3);text-align:center;padding:.5rem 1.5rem;line-height:1.5;font-family:var(--font-m)}
+.rr{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.rr:last-child{border-bottom:none}
+.rl{font-size:13px;color:var(--text2)}
+.rv{font-size:13px;font-weight:500;font-family:var(--font-m)}
+/* RING */
+.ring-wrap{display:flex;justify-content:center;padding:1rem 1.5rem .5rem}
+.ring-c{position:relative;width:180px;height:180px}
+.ring-svg{width:100%;height:100%}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-v{font-family:var(--font-d);font-size:36px;font-weight:300;color:var(--text);line-height:1}
+.ring-l{font-size:11px;color:var(--text3);font-family:var(--font-m);letter-spacing:.08em;margin-top:2px}
+/* STATS */
+.srow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 1.5rem .75rem}
+.sm{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:var(--r);padding:.7rem .75rem;text-align:center}
+.sm .sv{font-family:var(--font-m);font-size:18px}
+.sm .sl2{font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+/* PROGRESS */
+.ps{padding:0 1.5rem .25rem}
+.pi{margin-bottom:.75rem}
+.ph{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:5px}
+.ph .pv{font-family:var(--font-m);color:var(--text3)}
+.track{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden}
+.fill{height:100%;border-radius:3px;transition:width .7s cubic-bezier(0.34,1.56,0.64,1)}
+.f-cal{background:linear-gradient(90deg,var(--amber),#f5c675)}
+.f-wat{background:linear-gradient(90deg,var(--sky),#90c8f8)}
+.f-pro{background:linear-gradient(90deg,var(--sage),#7fe0b0)}
+.f-car{background:linear-gradient(90deg,var(--purple),#c4b5fd)}
+.f-fat{background:linear-gradient(90deg,var(--rose),#f4a8c1)}
+.f-mus{background:linear-gradient(90deg,var(--amber),var(--rose))}
+/* WATER DROPS */
+.wg{display:flex;flex-wrap:wrap;gap:5px;padding:.25rem 0 .5rem}
+.wd{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.04);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .25s}
+.wd.filled{background:rgba(91,164,245,0.2);border-color:rgba(91,164,245,0.5);box-shadow:0 0 12px rgba(91,164,245,0.2)}
+/* MOOD FULL */
+#mood-fs{position:fixed;inset:0;z-index:200;background:var(--night);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;animation:sIn .4s var(--tr);overflow:hidden}
+#mood-fs.open{display:flex}
+.heart-tap{font-size:80px;cursor:pointer;user-select:none;animation:hp .9s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(232,126,161,0.6));transition:transform .1s}
+.heart-tap:active{transform:scale(0.88)!important}
+@keyframes hp{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.mq{font-family:var(--font-d);font-size:26px;font-weight:300;line-height:1.4;color:var(--text);max-width:320px;margin:.75rem auto;min-height:90px;transition:opacity .25s}
+.mq em{color:var(--rose);font-style:italic}
+.mclose{position:absolute;top:1.5rem;right:1.5rem;background:var(--glass2);border:1px solid var(--border);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:var(--text2);z-index:10}
+/* FALLING HEARTS */
+.fh{position:fixed;pointer-events:none;z-index:150;animation:fall linear forwards;opacity:1}
+@keyframes fall{0%{transform:translateY(-60px)rotate(-15deg);opacity:1}80%{opacity:1}100%{transform:translateY(110vh)rotate(20deg);opacity:0}}
+/* SKY HEARTS */
+.sh{position:fixed;z-index:140;cursor:pointer;animation:floatH 6s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(232,126,161,0.7));user-select:none;transition:transform .15s;font-size:26px}
+.sh:active{transform:scale(1.5)!important}
+@keyframes floatH{0%,100%{transform:translateY(0)rotate(-8deg)}25%{transform:translateY(-20px)rotate(5deg)}50%{transform:translateY(-10px)rotate(-3deg)}75%{transform:translateY(-24px)rotate(8deg)}}
+/* STREAK */
+.sband{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(240,177,85,0.08),rgba(240,177,85,0.04));border:1px solid rgba(240,177,85,0.2);border-radius:var(--r);padding:.75rem 1.1rem;margin:.5rem 1.5rem}
+.flame{font-size:24px;animation:flicker 1.5s ease-in-out infinite}
+@keyframes flicker{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)drop-shadow(0 0 6px #f0b155)}}
+.snum{font-family:var(--font-d);font-size:28px;font-weight:300;color:var(--amber)}
+.wdots{display:flex;gap:4px}
+.wdt{width:10px;height:10px;border-radius:50%;background:rgba(240,177,85,0.15);border:1px solid rgba(240,177,85,0.2)}
+.wdt.hit{background:var(--amber);box-shadow:0 0 8px var(--amber-glow)}
+/* CHARTS */
+.cw{padding:0 1.5rem .75rem}
+.bars{display:flex;align-items:flex-end;gap:5px;height:80px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bar{width:100%;border-radius:4px 4px 0 0;min-height:3px;transition:height .6s cubic-bezier(0.34,1.56,0.64,1)}
+.bday{font-size:10px;color:var(--text3);font-family:var(--font-m)}
+/* LOG */
+.sz{margin:0 1.5rem;border:1.5px dashed rgba(78,203,140,0.3);border-radius:var(--r2);padding:2.5rem 1rem;text-align:center;cursor:pointer;background:rgba(78,203,140,0.03);transition:all .3s;position:relative;overflow:hidden}
+.sz:hover{border-color:var(--sage);background:rgba(78,203,140,0.06)}
+.sz-icon{font-size:40px;margin-bottom:.75rem;display:block;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.ai-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,rgba(91,164,245,0.2),rgba(78,203,140,0.15));border:1px solid rgba(91,164,245,0.3);border-radius:20px;font-size:10px;font-family:var(--font-m);letter-spacing:.08em;color:#7ec8f8;padding:3px 10px}
+.mchips{display:flex;flex-wrap:wrap;gap:5px;margin:.6rem 0}
+.mc{padding:4px 12px;border-radius:20px;font-size:12px;font-family:var(--font-m)}
+.mc-cal{background:rgba(240,177,85,0.15);color:var(--amber);border:1px solid rgba(240,177,85,0.25)}
+.mc-p{background:rgba(78,203,140,0.12);color:var(--sage);border:1px solid rgba(78,203,140,0.25)}
+.mc-c{background:rgba(167,139,250,0.12);color:#c4b5fd;border:1px solid rgba(167,139,250,0.25)}
+.mc-f{background:rgba(232,126,161,0.12);color:var(--rose);border:1px solid rgba(232,126,161,0.25)}
+.conf-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);font-family:var(--font-m)}
+.ct{flex:1;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.cf{height:100%;background:linear-gradient(90deg,var(--sage),var(--sky));border-radius:2px}
+.spin{width:24px;height:24px;border:2px solid var(--border);border-top-color:var(--sage);border-radius:50%;animation:sp .7s linear infinite;margin:0 auto .6rem}
+@keyframes sp{to{transform:rotate(360deg)}}
+/* RECS */
+.ri{display:flex;gap:12px;padding:.85rem 0;border-bottom:1px solid var(--border)}
+.ri:last-child{border-bottom:none}
+.rt-th{width:40px;height:40px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.rt-s{background:rgba(78,203,140,0.1);border:1px solid rgba(78,203,140,0.2)}
+.rt-a{background:rgba(240,177,85,0.1);border:1px solid rgba(240,177,85,0.2)}
+.rt-k{background:rgba(91,164,245,0.1);border:1px solid rgba(91,164,245,0.2)}
+.rt-r{background:rgba(232,126,161,0.1);border:1px solid rgba(232,126,161,0.2)}
+.rt-p{background:rgba(167,139,250,0.1);border:1px solid rgba(167,139,250,0.2)}
+.rb .rt{font-size:13px;font-weight:500;margin-bottom:2px}
+.rb .rd{font-size:12px;color:var(--text2);line-height:1.4}
+/* PROFILE */
+.avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(78,203,140,0.2),rgba(91,164,245,0.15));border:1.5px solid rgba(78,203,140,0.3);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 0 30px rgba(78,203,140,0.2)}
+.slabel{font-size:10px;font-family:var(--font-m);color:var(--text3);letter-spacing:.12em;text-transform:uppercase;padding:.5rem 1.5rem .3rem}
+/* NAV */
+.nav{display:flex;background:rgba(7,13,20,0.96);border-top:1px solid var(--border);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:sticky;bottom:0;z-index:10}
+.nb{flex:1;padding:.7rem .5rem .65rem;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:none;font-size:10px;color:var(--text3);font-family:var(--font-b);transition:color .2s;letter-spacing:.03em}
+.nb.active{color:var(--sage)}
+.niw{width:24px;height:24px;font-size:18px;display:flex;align-items:center;justify-content:center}
+.npip{width:4px;height:4px;border-radius:50%;background:var(--sage);margin-top:1px;opacity:0;transition:opacity .2s}
+.nb.active .npip{opacity:1}
+/* EWAN STAMPS */
+.estamp{font-family:var(--font-d);font-size:12px;font-style:italic;color:var(--text3);text-align:center;padding:.3rem;letter-spacing:.06em}
+.estamp em{color:var(--sage)}
+/* LOAD SCREEN */
+.ls{position:fixed;inset:0;z-index:300;background:var(--night);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.lr{width:60px;height:60px;border:1.5px solid rgba(78,203,140,0.2);border-top-color:var(--sage);border-radius:50%;animation:sp .9s linear infinite;box-shadow:0 0 20px rgba(78,203,140,0.15)}
+.ln{font-family:var(--font-d);font-size:28px;font-weight:300;color:var(--text);margin-top:1.5rem;letter-spacing:.05em}
+.ln em{color:var(--sage);font-style:italic}
+/* NOTIF */
+.notif{position:fixed;top:1rem;left:50%;transform:translateX(-50%)translateY(-80px);z-index:250;background:rgba(7,13,20,0.97);border:1px solid var(--border);border-radius:var(--r);padding:.65rem 1.25rem;font-size:13px;color:var(--sage);backdrop-filter:blur(20px);min-width:220px;text-align:center;transition:transform .4s var(--tr);white-space:nowrap}
+.notif.show{transform:translateX(-50%)translateY(0)}
+/* TICKER */
+.ticker{overflow:hidden;white-space:nowrap;font-size:10px;font-family:var(--font-m);color:var(--text3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.4rem 0;letter-spacing:.05em}
+.ti2{display:inline-block;animation:marq 35s linear infinite}
+@keyframes marq{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FLOATING MOTIVATION HEART SYSTEM
+   ───────────────────────────────────────────────────────────────────────
+   Hearts spawn from the LEFT or RIGHT edge only, drifting inward toward
+   centre as they fall. This keeps the main content area clear while
+   still feeling alive and present at the periphery — like butterflies
+   at the edge of a garden.
+
+   Each side has its own keyframe:
+   • fmh-from-left  — spawns near left edge, drifts gently right
+   • fmh-from-right — spawns near right edge, drifts gently left
+
+   The S-curve on X (eases in, peaks, eases back slightly) mimics how
+   a leaf caught in a gentle breeze actually moves — not a straight
+   diagonal, which would feel like a GUI element, not nature.
+
+   z-index 130: above dashboard content, below mood overlay (200)
+   and notification (250).
+   ═══════════════════════════════════════════════════════════════════════ */
+.fmh {
+  position: fixed;
+  z-index: 130;
+  cursor: pointer;
+  user-select: none;
+  top: -70px;              /* spawn above viewport, hidden until fade-in */
+  line-height: 1;
+  pointer-events: auto;
+  animation-timing-function: cubic-bezier(0.33, 0.0, 0.67, 1.0); /* ease-in-out-cubic */
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+  /* Gentle idle wobble applied as a second, looping animation */
+  /* (the wobble animation is added via JS after spawn, runs in parallel) */
+}
+
+/* ── Streak tiers ───────────────────────────────────────────────────── */
+
+/* Tier 0 — streak 0-2: simple, no glow */
+.fmh--tier0 {
+  font-size: 26px;
+  opacity: 0.88;
+}
+
+/* Tier 1 — streak 3-6: larger, warm rose halo */
+.fmh--tier1 {
+  font-size: 32px;
+  filter: drop-shadow(0 0 7px rgba(232, 126, 161, 0.50));
+}
+
+/* Tier 2 — streak 7-13: prominent glow, feels earned */
+.fmh--tier2 {
+  font-size: 38px;
+  filter: drop-shadow(0 0 12px rgba(232, 126, 161, 0.70))
+          drop-shadow(0 0 24px rgba(232, 126, 161, 0.30));
+}
+
+/* Tier 3 — streak 14+: rare golden heart, strong luminous aura */
+.fmh--tier3 {
+  font-size: 42px;
+  filter: drop-shadow(0 0 16px rgba(240, 177, 85, 0.90))
+          drop-shadow(0 0 36px rgba(240, 177, 85, 0.45))
+          drop-shadow(0 0 60px rgba(240, 177, 85, 0.20));
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ── Hover affordance — reveals the heart is interactive ───────────── */
+.fmh:hover       { filter: brightness(1.18); }
+.fmh--tier1:hover { filter: drop-shadow(0 0 14px rgba(232,126,161,0.80)); }
+.fmh--tier2:hover { filter: drop-shadow(0 0 22px rgba(232,126,161,0.95)) drop-shadow(0 0 40px rgba(232,126,161,0.45)); }
+.fmh--tier3:hover { filter: drop-shadow(0 0 26px rgba(240,177,85,1.0))   drop-shadow(0 0 50px rgba(240,177,85,0.60)); }
+
+/* ── Tooltip label — shows on hover, fades in smoothly ─────────────── */
+.fmh::after {
+  content: attr(data-tip);        /* set via JS: "tap me ✨" */
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-m);
+  font-size: 9px;
+  letter-spacing: .08em;
+  color: rgba(232,126,161,0.85);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.fmh:hover::after { opacity: 1; }
+
+/* ── Idle wobble — layered on top of the fall animation ─────────────── */
+@keyframes fmh-wobble {
+  0%   { transform-origin: 50% 80%; }
+  25%  { transform-origin: 50% 80%; rotate: -5deg; }
+  75%  { rotate: 5deg; }
+  100% { rotate: 0deg; }
+}
+
+/* ── LEFT-SIDE fall: spawns near left edge, drifts inward (rightward) ─ */
+/*    X path: starts at 0, curves in by ~40px at midpoint, settles ~28px */
+/*    in — gentle inward lean, not a straight diagonal                   */
+@keyframes fmh-from-left {
+  0%   { transform: translateX(0px)   translateY(0px);   opacity: 0;    }
+  10%  { transform: translateX(6px)   translateY(6vh);   opacity: 1;    }
+  35%  { transform: translateX(26px)  translateY(28vh);  opacity: 1;    }
+  60%  { transform: translateX(38px)  translateY(55vh);  opacity: 1;    }
+  85%  { transform: translateX(28px)  translateY(84vh);  opacity: 0.85; }
+  100% { transform: translateX(22px)  translateY(108vh); opacity: 0;    }
+}
+
+/* ── RIGHT-SIDE fall: mirrors left, drifts inward (leftward) ────────── */
+@keyframes fmh-from-right {
+  0%   { transform: translateX(0px)    translateY(0px);   opacity: 0;    }
+  10%  { transform: translateX(-6px)   translateY(6vh);   opacity: 1;    }
+  35%  { transform: translateX(-26px)  translateY(28vh);  opacity: 1;    }
+  60%  { transform: translateX(-38px)  translateY(55vh);  opacity: 1;    }
+  85%  { transform: translateX(-28px)  translateY(84vh);  opacity: 0.85; }
+  100% { transform: translateX(-22px)  translateY(108vh); opacity: 0;    }
+}
+
+/* ── Burst particles — radiate outward on click ─────────────────────── */
+/*    --tx / --ty are JS-computed pixel offsets (no CSS trig needed,     */
+/*    avoids Chrome 111+ requirement for calc(cos()) / calc(sin()))      */
+.fmh-burst {
+  position: fixed;
+  z-index: 131;
+  pointer-events: none;
+  user-select: none;
+  font-size: 15px;
+  line-height: 1;
+  animation: fmh-burst-fly 0.75s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ease-out-expo: fast burst → soft landing. Feels satisfying, not explosive */
+@keyframes fmh-burst-fly {
+  0%   { transform: translate(0, 0) scale(1.2); opacity: 1;    }
+  40%  {                                         opacity: 0.95; }
+  100% { transform: translate(var(--tx, 0px), var(--ty, 0px)) scale(0.2); opacity: 0; }
+}
+
+/* ── Streak milestone celebration overlay ───────────────────────────── */
+.fmh-milestone {
+  position: fixed;
+  inset: 0;
+  z-index: 145;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fmh-milestone-in 3.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.fmh-milestone-inner {
+  text-align: center;
+  animation: fmh-milestone-scale 3.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.fmh-milestone-emoji { font-size: 56px; display: block; margin-bottom: .5rem; }
+.fmh-milestone-text  {
+  font-family: var(--font-d);
+  font-size: 22px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--amber);
+  text-shadow: 0 0 30px rgba(240,177,85,0.6);
+  white-space: nowrap;
+}
+@keyframes fmh-milestone-in {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes fmh-milestone-scale {
+  0%   { transform: scale(0.7); }
+  20%  { transform: scale(1.05); }
+  40%  { transform: scale(1.0); }
+  100% { transform: scale(1.0); }
+}
+/* TARGET WEIGHT REVEAL */
+.tw-reveal{margin-top:.75rem;padding:.75rem;background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.2);border-radius:var(--r);animation:sIn .3s var(--tr)}
+/* TOGGLE */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:.5rem 0}
+.tog{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,0.1);border:1px solid var(--border);cursor:pointer;position:relative;transition:background .3s}
+.tog.on{background:var(--sage);border-color:var(--sage)}
+.tog::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .3s}
+.tog.on::after{left:22px}
+/* MUSCLE BANNER */
+.mbanner{background:linear-gradient(135deg,rgba(240,177,85,0.08),rgba(232,126,161,0.06));border:1px solid rgba(240,177,85,0.2);border-radius:var(--r);padding:.75rem 1rem;margin:.5rem 1.5rem;display:none}
+.mbanner.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="ls" id="loader">
+  <div class="lr"></div>
+  <div class="ln">Nutri<em>Care</em></div>
+  <div style="font-size:11px;color:var(--text3);font-family:var(--font-m);margin-top:.5rem;letter-spacing:.1em">your wellness companion</div>
+  <div style="font-family:var(--font-d);font-size:13px;font-style:italic;color:var(--text3);margin-top:1.5rem">crafted with love by <em style="color:var(--sage)">Ewan</em> 💚</div>
+</div>
+
+<!-- NOTIF -->
+<div class="notif" id="notif"><span id="nmsg">Welcome!</span></div>
+
+<!-- ORBS -->
+<div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+
+<!-- MOOD FULLSCREEN -->
+<div id="mood-fs">
+  <div class="mclose" onclick="closeMood()">✕</div>
+  <p style="font-family:var(--font-m);font-size:10px;color:var(--text3);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem">how are you feeling?</p>
+  <div class="mq" id="mq">Tap the <em>heart</em> and see what happens...</div>
+  <div style="margin:1.25rem 0">
+    <div class="heart-tap" id="htap" onclick="tapHeart()">❤️</div>
+    <div style="font-family:var(--font-m);font-size:11px;color:var(--text3);margin-top:.5rem" id="htcount">tap ∞</div>
+  </div>
+  <p style="font-size:12px;color:var(--text3);font-family:var(--font-m)">keep tapping for more ✨</p>
+  <div style="margin-top:2.5rem;font-family:var(--font-d);font-size:13px;font-style:italic;color:var(--text3)">NutriCare by <em style="color:var(--rose)">Ewan</em></div>
+</div>
+
+<div id="app">
+
+<!-- ══ S1: BASICS ══ -->
+<div class="screen active" id="s1">
+  <div class="topbar">
+    <div><div class="logo">Nutri<em>Care</em></div><div class="logo-by">made by Ewan ✦</div></div>
+    <div class="clock-chip" id="ck1">--:--</div>
+  </div>
+  <div class="hero">
+    <div class="hero-glyph">🌿</div>
+    <h1>Your <em>gentle</em><br>wellness companion</h1>
+    <p>Personalized guidance for your body and your journey — no judgment, just support.</p>
+  </div>
+  <div class="steps"><div class="sd active"></div><div class="sl"></div><div class="sd"></div><div class="sl"></div><div class="sd"></div><div class="sl"></div><div class="sd"></div><div class="sl"></div><div class="sd"></div></div>
+  <div style="padding:0 1.5rem">
+    <div class="card">
+      <p class="fl" style="margin-bottom:.75rem">Step 1 — About you</p>
+      <div class="g2" style="margin-bottom:.75rem">
+        <div><label class="fl">Age</label><input class="fi" type="number" id="i-age" placeholder="e.g. 28" min="10" max="120"></div>
+        <div><label class="fl">Weight (kg)</label><input class="fi" type="number" id="i-weight" placeholder="e.g. 65"></div>
+      </div>
+      <div class="g2" style="margin-bottom:.75rem">
+        <div><label class="fl">Height (cm)</label><input class="fi" type="number" id="i-height" placeholder="e.g. 170"></div>
+        <div><label class="fl">Target weight (kg)</label><input class="fi" type="number" id="i-target" placeholder="optional"></div>
+      </div>
+      <div><label class="fl">Gender (optional)</label>
+        <div class="g3">
+          <div class="choice" onclick="selOne('gender','male',this)"><strong>Male</strong></div>
+          <div class="choice" onclick="selOne('gender','female',this)"><strong>Female</strong></div>
+          <div class="choice" onclick="selOne('gender','other',this)"><strong>Skip</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast"><span class="ti">💚</span><span>Take your time — you're already doing something kind for yourself.</span></div>
+  <div class="disc">NutriCare by Ewan — guidance only, not medical advice</div>
+  <button class="btn btn-p" onclick="go(2)">Continue →</button>
+</div>
+
+<!-- ══ S2: GOALS (MULTI) ══ -->
+<div class="screen" id="s2">
+  <div class="topbar"><div><div class="logo">Nutri<em>Care</em></div><div class="logo-by">made by Ewan ✦</div></div><button class="icon-btn" onclick="go(1)">←</button></div>
+  <div class="steps"><div class="sd done"></div><div class="sl done"></div><div class="sd active"></div><div class="sl"></div><div class="sd"></div><div class="sl"></div><div class="sd"></div><div class="sl"></div><div class="sd"></div></div>
+  <div style="padding:1rem 1.5rem .5rem">
+    <p style="font-family:var(--font-d);font-size:26px;font-weight:300;line-height:1.2;margin-bottom:.4rem">What are your <em style="color:var(--purple)">goals?</em></p>
+    <p style="font-size:13px;color:var(--text2)">Select everything that applies — you can have multiple goals at once.</p>
+  </div>
+  <div style="padding:0 1.5rem">
+    <div class="card">
+      <div style="display:flex;flex-wrap:wrap;margin-bottom:.5rem">
+        <div class="gc" onclick="toggleGoal('lose',this)"><span class="gi">🔥</span>Lose weight</div>
+        <div class="gc" onclick="toggleGoal('maintain',this)"><span class="gi">⚖️</span>Maintain weight</div>
+        <div class="gc" onclick="toggleGoal('gain',this)"><span class="gi">📈</span>Gain weight</div>
+        <div class="gc" onclick="toggleGoal('muscle',this)"><span class="gi">💪</span>Build muscle</div>
+        <div class="gc" onclick="toggleGoal('endurance',this)"><span class="gi">🏃</span>Improve endurance</div>
+        <div class="gc" onclick="toggleGoal('energy',this)"><span class="gi">⚡</span>More energy</div>
+        <div class="gc" onclick="toggleGoal('health',this)"><span class="gi">🫀</span>General health</div>
+        <div class="gc" onclick="toggleGoal('recover',this)"><span class="gi">🌱</span>Recovery</div>
+        <div class="gc" onclick="toggleGoal('stress',this)"><span class="gi">🧘</span>Reduce stress eating</div>
+        <div class="gc" onclick="toggleGoal('sleep',this)"><span class="gi">🌙</span>Better sleep</div>
+      </div>
+      <div class="tw-reveal" id="tw-reveal" style="display:none">
+        <label class="fl" style="color:rgba(167,139,250,0.8)">Target weight (kg) — optional</label>
+        <input class="fi" type="number" id="i-target2" placeholder="e.g. 75 kg">
+        <p style="font-size:12px;color:rgba(167,139,250,0.6);margin-top:.4rem">We'll track your progress towards this 💜</p>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="goal-toast"><span class="ti">⭐</span><span id="goal-toast-msg">Select your goals — your plan will be tailored to all of them.</span></div>
+  <button class="btn btn-p" onclick="go(3)">Continue →</button>
+</div>
+
+<!-- ══ S3: ACTIVITY ══ -->
+<div class="screen" id="s3">
+  <div class="topbar"><div><div class="logo">Nutri<em>Care</em></div></div><button class="icon-btn" onclick="go(2)">←</button></div>
+  <div class="steps"><div class="sd done"></div><div class="sl done"></div><div class="sd done"></div><div class="sl done"></div><div class="sd active"></div><div class="sl"></div><div class="sd"></div><div class="sl"></div><div class="sd"></div></div>
+  <div style="padding:1rem 1.5rem .75rem">
+    <p style="font-family:var(--font-d);font-size:26px;font-weight:300;line-height:1.2;margin-bottom:.4rem">How <em style="color:var(--sage)">active</em><br>are you?</p>
+    <p style="font-size:13px;color:var(--text2)">Your activity level determines your calorie needs.</p>
+  </div>
+  <div style="padding:0 1.5rem;display:flex;flex-direction:column;gap:8px">
+    <div class="choice" onclick="selOne('activity','sedentary',this)"><strong>🛋️ Sedentary</strong>Little or no exercise, desk job</div>
+    <div class="choice" onclick="selOne('activity','light',this)"><strong>🚶 Lightly active</strong>Light exercise 1–3 days/week</div>
+    <div class="choice" onclick="selOne('activity','moderate',this)"><strong>🏃 Moderately active</strong>Moderate exercise 3–5 days/week</div>
+    <div class="choice" onclick="selOne('activity','very',this)"><strong>🏋️ Very active</strong>Hard exercise most days</div>
+    <div class="choice" onclick="selOne('activity','extreme',this)"><strong>⚡ Extremely active</strong>Physical job + intense daily training</div>
+  </div>
+  <div class="toast" style="margin-top:auto"><span class="ti">🤍</span><span>All activity levels are valid. Honesty helps us help you accurately.</span></div>
+  <button class="btn btn-p" onclick="go(4)">Continue →</button>
+</div>
+
+<!-- ══ S4: HEALTH ══ -->
+<div class="screen" id="s4">
+  <div class="topbar"><div><div class="logo">Nutri<em>Care</em></div></div><button class="icon-btn" onclick="go(3)">←</button></div>
+  <div class="steps"><div class="sd done"></div><div class="sl done"></div><div class="sd done"></div><div class="sl done"></div><div class="sd done"></div><div class="sl done"></div><div class="sd active"></div><div class="sl"></div><div class="sd"></div></div>
+  <div style="padding:1rem 1.5rem .75rem">
+    <p style="font-family:var(--font-d);font-size:26px;font-weight:300;line-height:1.2;margin-bottom:.4rem">Your <em style="color:var(--sage)">health</em><br>profile</p>
+    <p style="font-size:13px;color:var(--text2)">Private — only used to personalize your guidance.</p>
+  </div>
+  <div style="padding:0 1.5rem">
+    <div class="card">
+      <label class="fl">Health conditions (select all that apply)</label>
+      <div style="display:flex;flex-wrap:wrap;margin-bottom:1rem">
+        <span class="cp" onclick="toggleCond('diabetes',this)">🩺 Diabetes</span>
+        <span class="cp" onclick="toggleCond('hormonal',this)">🌸 Hormonal issues</span>
+        <span class="cp" onclick="toggleCond('thyroid',this)">🦋 Thyroid</span>
+        <span class="cp" onclick="toggleCond('digestive',this)">🌿 Digestive issues</span>
+        <span class="cp" onclick="toggleCond('recovery',this)">❤️ Recovery</span>
+        <span class="cp" onclick="toggleCond('eating',this)">🤍 Eating difficulties</span>
+        <span class="cp" onclick="toggleCond('heart',this)">💙 Heart condition</span>
+        <span class="cp" onclick="toggleCond('kidney',this)">💜 Kidney condition</span>
+        <span class="cp" onclick="toggleCond('allergy',this)">⚠️ Food allergies</span>
+        <span class="cp" onclick="toggleCond('none',this)">🙂 None / prefer not to say</span>
+      </div>
+      <label class="fl">Anything else? (optional)</label>
+      <textarea class="fi" id="health-notes" placeholder="e.g. on medication, recovering from surgery, low appetite..." style="height:72px;resize:none"></textarea>
+    </div>
+  </div>
+  <div class="toast" id="cond-toast"><span class="ti">💜</span><span>Whatever you're going through, you're not alone. We'll tailor everything gently around you.</span></div>
+  <button class="btn btn-p" onclick="go(5)">Continue →</button>
+</div>
+
+<!-- ══ S5: RESULTS + REMINDERS ══ -->
+<div class="screen" id="s5">
+  <div class="topbar"><div><div class="logo">Nutri<em>Care</em></div></div><button class="icon-btn" onclick="go(4)">←</button></div>
+  <div class="steps"><div class="sd done"></div><div class="sl done"></div><div class="sd done"></div><div class="sl done"></div><div class="sd done"></div><div class="sl done"></div><div class="sd done"></div><div class="sl done"></div><div class="sd active"></div></div>
+  <div style="padding:1rem 1.5rem .75rem">
+    <p style="font-family:var(--font-d);font-size:26px;font-weight:300;line-height:1.2;margin-bottom:.4rem">Your personal <em style="color:var(--sage)">guidance</em></p>
+    <p style="font-size:13px;color:var(--text2)">Estimates based on your profile — always guidance, never rules.</p>
+  </div>
+  <div style="padding:0 1.5rem"><div class="card glow-sage"><div id="res-rows"></div></div></div>
+  <div id="health-adv-card" style="display:none;padding:.5rem 1.5rem 0">
+    <div class="card" style="background:rgba(78,203,140,0.06);border-color:rgba(78,203,140,0.2)">
+      <p class="fl" style="color:var(--sage);margin-bottom:.4rem">Personalized note</p>
+      <p id="health-adv-text" style="font-size:13px;color:var(--text2);line-height:1.6"></p>
+    </div>
+  </div>
+  <div style="padding:.5rem 1.5rem 0">
+    <div class="card">
+      <p class="fl" style="margin-bottom:.6rem">Reminders</p>
+      <div class="tog-row"><span style="font-size:13px;color:var(--text2)">💧 Water reminders</span><div class="tog on" id="tog-w" onclick="this.classList.toggle('on');saveS()"></div></div>
+      <div class="tog-row"><span style="font-size:13px;color:var(--text2)">🍽️ Meal logging reminders</span><div class="tog on" id="tog-m" onclick="this.classList.toggle('on');saveS()"></div></div>
+      <div class="tog-row"><span style="font-size:13px;color:var(--text2)">🌙 Evening check-in</span><div class="tog" id="tog-e" onclick="this.classList.toggle('on');saveS()"></div></div>
+    </div>
+  </div>
+  <div class="toast" id="res-toast"><span class="ti">🌸</span><span id="res-toast-msg">You're doing something wonderful for yourself.</span></div>
+  <p class="disc">Mifflin-St Jeor equations. Consult a healthcare professional for medical guidance.</p>
+  <div class="estamp">Crafted with care by <em>Ewan</em> ✦</div>
+  <button class="btn btn-p" onclick="go(6)">Start your journey →</button>
+</div>
+
+<!-- ══ S6: DASHBOARD ══ -->
+<div class="screen" id="s6">
+  <div class="topbar">
+    <div><div class="logo">Nutri<em>Care</em></div><div class="logo-by">by Ewan ✦</div></div>
+    <div class="clock-chip" id="ck2">--:--</div>
+  </div>
+  <div class="ticker"><div class="ti2" id="tick-txt">Loading...</div></div>
+  <div class="toast" id="dash-toast"><span class="ti" id="dash-icon">✨</span><span id="dash-msg">Welcome!</span></div>
+
+  <div class="ring-wrap">
+    <div class="ring-c">
+      <svg class="ring-svg" viewBox="0 0 180 180">
+        <circle cx="90" cy="90" r="76" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+        <circle cx="90" cy="90" r="76" fill="none" stroke="rgba(240,177,85,0.08)" stroke-width="10" stroke-dasharray="478" stroke-dashoffset="0" transform="rotate(-90 90 90)"/>
+        <circle id="cal-ring" cx="90" cy="90" r="76" fill="none" stroke="url(#rg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="478" stroke-dashoffset="478" transform="rotate(-90 90 90)" style="transition:stroke-dashoffset .9s cubic-bezier(0.34,1.56,0.64,1)"/>
+        <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#f0b155"/><stop offset="100%" stop-color="#4ecb8c"/></linearGradient></defs>
+      </svg>
+      <div class="ring-txt">
+        <div class="ring-v" id="ring-v">0</div>
+        <div class="ring-l">CONSUMED</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px">of <span id="ring-g">2000</span> kcal</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mbanner" id="mbanner">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem">
+      <span style="font-size:13px;font-weight:500">💪 Towards your target weight</span>
+      <span style="font-size:11px;font-family:var(--font-m);color:var(--amber)" id="mpct-lbl">0%</span>
+    </div>
+    <div class="track"><div class="fill f-mus" id="mbar" style="width:0%"></div></div>
+    <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text3);font-family:var(--font-m);margin-top:.35rem">
+      <span id="m-start">Start</span><span id="m-target">Target</span>
+    </div>
+  </div>
+
+  <div class="sband">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="flame">🔥</span>
+      <div>
+        <div style="display:flex;align-items:baseline;gap:4px"><span class="snum" id="streak-n">0</span><span style="font-size:13px;color:var(--amber2)">day streak</span></div>
+        <div style="font-size:11px;color:var(--text3);font-family:var(--font-m)">Keep it up!</div>
+      </div>
+    </div>
+    <div class="wdots" id="wdots"></div>
+  </div>
+
+  <div class="srow">
+    <div class="sm"><div class="sv" id="s-rem" style="color:var(--sage)">—</div><div class="sl2">Remaining</div></div>
+    <div class="sm"><div class="sv" id="s-meals" style="color:var(--amber)">0</div><div class="sl2">Meals</div></div>
+    <div class="sm"><div class="sv" id="s-wml" style="color:var(--sky)">0ml</div><div class="sl2">Water</div></div>
+  </div>
+
+  <div class="ps">
+    <div class="pi"><div class="ph"><span>Protein</span><span class="pv" id="p-lbl">0g</span></div><div class="track"><div class="fill f-pro" id="p-bar" style="width:0%"></div></div></div>
+    <div class="pi"><div class="ph"><span>Carbohydrates</span><span class="pv" id="c-lbl">0g</span></div><div class="track"><div class="fill f-car" id="c-bar" style="width:0%"></div></div></div>
+    <div class="pi"><div class="ph"><span>Fats</span><span class="pv" id="f-lbl">0g</span></div><div class="track"><div class="fill f-fat" id="f-bar" style="width:0%"></div></div></div>
+  </div>
+
+  <div class="slabel">Hydration</div>
+  <div style="padding:0 1.5rem">
+    <div class="card" style="padding:1rem 1.25rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+        <span style="font-size:13px;color:var(--text2)" id="w-label">0L / 2.5L</span>
+        <button onclick="addWater()" style="background:rgba(91,164,245,0.15);border:1px solid rgba(91,164,245,0.3);color:#7ec8f8;border-radius:8px;padding:4px 12px;font-size:12px;cursor:pointer;font-family:var(--font-m)">+250ml</button>
+      </div>
+      <div class="wg" id="wdrops"></div>
+      <div class="track" style="margin-top:.5rem"><div class="fill f-wat" id="w-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="slabel">How are you feeling?</div>
+  <div style="padding:0 1.5rem">
+    <div class="card" style="padding:.85rem 1.25rem;cursor:pointer;transition:border-color .2s" onclick="openMood()" id="mood-card">
+      <div style="display:flex;align-items:center;gap:.75rem">
+        <span style="font-size:32px" id="mood-icon">❤️</span>
+        <div>
+          <p style="font-size:14px;font-weight:500">Tap to check in</p>
+          <p style="font-size:12px;color:var(--text3);font-family:var(--font-d);font-style:italic" id="mood-sub">Tap the heart and see what happens...</p>
+        </div>
+        <span style="margin-left:auto;font-size:20px;color:var(--rose)">→</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slabel">This week</div>
+  <div class="cw"><div class="bars" id="bars"></div><div style="display:flex;gap:5px;margin-top:5px" id="blabels"></div></div>
+
+  <div class="estamp" style="margin-top:.5rem">NutriCare — <em>made by Ewan</em> with ❤️</div>
+  <p class="disc">Guidance only · Not medical advice · All data stored locally on your device 🔒</p>
+  <div style="height:.5rem"></div>
+
+  <div class="nav">
+    <button class="nb active" id="nb-h" onclick="navTo('home',this)"><div class="niw">🏠</div><span>Home</span><div class="npip"></div></button>
+    <button class="nb" id="nb-l" onclick="navTo('log',this)"><div class="niw">📷</div><span>Log</span><div class="npip"></div></button>
+    <button class="nb" id="nb-r" onclick="navTo('recs',this)"><div class="niw">💡</div><span>Ideas</span><div class="npip"></div></button>
+    <button class="nb" id="nb-p" onclick="navTo('profile',this)"><div class="niw">👤</div><span>Profile</span><div class="npip"></div></button>
+  </div>
+</div>
+
+<!-- ══ S7: LOG ══ -->
+<div class="screen" id="s7">
+  <div class="topbar"><div><div class="logo">Nutri<em>Care</em></div><div class="logo-by">by Ewan ✦</div></div><span class="ai-badge">✦ AI</span></div>
+  <div style="padding:.5rem 1.5rem .75rem">
+    <p style="font-family:var(--font-d);font-size:24px;font-weight:300;margin-bottom:.25rem">Log a <em style="color:var(--sage)">meal</em></p>
+    <p style="font-size:13px;color:var(--text2)">Describe what you ate for an AI nutrition estimate.</p>
+  </div>
+  <div class="sz" id="scan-zone" onclick="triggerScan()">
+    <span class="sz-icon">📸</span>
+    <div style="font-family:var(--font-d);font-size:20px;font-weight:300;margin-bottom:.3rem">Scan your food</div>
+    <div style="font-size:12px;color:var(--text3)">AI-powered analysis</div>
+  </div>
+  <div style="padding:.75rem 1.5rem 0">
+    <div class="card">
+      <label class="fl">Or describe your meal</label>
+      <input class="fi" type="text" id="food-in" placeholder="e.g. grilled salmon with quinoa and broccoli">
+      <button onclick="analyzeMeal()" style="width:100%;margin-top:.65rem;padding:10px;background:linear-gradient(135deg,rgba(78,203,140,0.2),rgba(91,164,245,0.15));border:1px solid rgba(78,203,140,0.3);border-radius:var(--r);color:var(--sage);font-size:13px;font-family:var(--font-m);cursor:pointer;letter-spacing:.05em">✦ Analyze with AI</button>
+    </div>
+  </div>
+  <div id="food-load" style="display:none;padding:1.5rem;text-align:center"><div class="spin"></div><p style="font-size:13px;color:var(--text3);font-family:var(--font-m)">Analyzing nutrition...</p></div>
+  <div id="food-res" style="display:none;padding:.5rem 1.5rem 0">
+    <div class="card glow-sage">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem">
+        <p style="font-size:14px;font-weight:500" id="food-nm">Food item</p>
+        <span class="ai-badge">estimated</span>
+      </div>
+      <div class="mchips"><span class="mc mc-cal" id="mc-c">—</span><span class="mc mc-p" id="mc-p">—</span><span class="mc mc-c" id="mc-cb">—</span><span class="mc mc-f" id="mc-f">—</span></div>
+      <div class="conf-row"><span>Confidence</span><div class="ct"><div class="cf" id="conf-f" style="width:80%"></div></div><span id="conf-p">80%</span></div>
+    </div>
+    <button onclick="addMeal()" style="width:100%;margin-top:.65rem;padding:12px;background:linear-gradient(135deg,var(--sage),var(--sage2));border:none;border-radius:var(--r);color:#fff;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-b)">Add to today ✓</button>
+  </div>
+  <div class="toast" style="margin-top:auto"><span class="ti">🍃</span><span>Small meals count too. Any nourishment is a win today.</span></div>
+  <p class="disc">AI estimates are approximate. NutriCare by Ewan — not medical advice.</p>
+  <div class="nav">
+    <button class="nb" onclick="navTo('home',this)"><div class="niw">🏠</div><span>Home</span><div class="npip"></div></button>
+    <button class="nb active" onclick="navTo('log',this)"><div class="niw">📷</div><span>Log</span><div class="npip"></div></button>
+    <button class="nb" onclick="navTo('recs',this)"><div class="niw">💡</div><span>Ideas</span><div class="npip"></div></button>
+    <button class="nb" onclick="navTo('profile',this)"><div class="niw">👤</div><span>Profile</span><div class="npip"></div></button>
+  </div>
+</div>
+
+<!-- ══ S8: RECS ══ -->
+<div class="screen" id="s8">
+  <div class="topbar"><div><div class="logo">Nutri<em>Care</em></div></div></div>
+  <div style="padding:.5rem 1.5rem .75rem">
+    <p style="font-family:var(--font-d);font-size:26px;font-weight:300;margin-bottom:.3rem">Personalized <em style="color:var(--sage)">ideas</em></p>
+    <p style="font-size:13px;color:var(--text2)">Tailored to your health profile and goals.</p>
+  </div>
+  <div style="padding:0 1.5rem"><div class="card" id="recs-list"></div></div>
+  <div class="toast" style="margin-top:.75rem"><span class="ti">🌱</span><span>These are gentle ideas, not rules. Trust your body above all.</span></div>
+  <p class="disc">Not medical advice · NutriCare by Ewan</p>
+  <div class="nav">
+    <button class="nb" onclick="navTo('home',this)"><div class="niw">🏠</div><span>Home</span><div class="npip"></div></button>
+    <button class="nb" onclick="navTo('log',this)"><div class="niw">📷</div><span>Log</span><div class="npip"></div></button>
+    <button class="nb active" onclick="navTo('recs',this)"><div class="niw">💡</div><span>Ideas</span><div class="npip"></div></button>
+    <button class="nb" onclick="navTo('profile',this)"><div class="niw">👤</div><span>Profile</span><div class="npip"></div></button>
+  </div>
+</div>
+
+<!-- ══ S9: PROFILE ══ -->
+<div class="screen" id="s9">
+  <div class="topbar"><div><div class="logo">Nutri<em>Care</em></div><div class="logo-by">by Ewan ✦</div></div></div>
+  <div style="display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem .75rem">
+    <div class="avatar">🌿</div>
+    <div><p style="font-family:var(--font-d);font-size:20px;font-weight:300">Your journey</p><p style="font-size:12px;color:var(--text3);font-family:var(--font-m)" id="prof-date">Personalized today</p></div>
+  </div>
+  <div style="padding:0 1.5rem"><div class="card glow-sage"><div id="prof-rows"></div></div></div>
+  <div class="slabel" style="margin-top:.75rem">Weekly insights</div>
+  <div style="padding:0 1.5rem"><div class="card" id="weekly-ins"></div></div>
+  <div class="slabel">This week</div>
+  <div class="cw"><div class="bars" id="bars2"></div><div style="display:flex;gap:5px;margin-top:5px" id="blabels2"></div></div>
+  <button class="btn btn-g" onclick="go(1)" style="margin-top:.5rem">Edit profile</button>
+  <button class="btn btn-g" onclick="resetApp()" style="background:rgba(232,126,161,0.06);border-color:rgba(232,126,161,0.2);color:var(--rose);margin-top:.25rem">Reset all data</button>
+  <div style="text-align:center;padding:1rem 1rem .5rem;font-family:var(--font-d);font-size:17px;font-style:italic;color:var(--text3)">Made with love by <em style="color:var(--sage)">Ewan</em> 💚</div>
+  <p style="text-align:center;font-size:11px;color:var(--text3);font-family:var(--font-m);padding-bottom:1rem">NutriCare v2.0 — your data is stored locally 🔒</p>
+  <div class="nav">
+    <button class="nb" onclick="navTo('home',this)"><div class="niw">🏠</div><span>Home</span><div class="npip"></div></button>
+    <button class="nb" onclick="navTo('log',this)"><div class="niw">📷</div><span>Log</span><div class="npip"></div></button>
+    <button class="nb" onclick="navTo('recs',this)"><div class="niw">💡</div><span>Ideas</span><div class="npip"></div></button>
+    <button class="nb active" onclick="navTo('profile',this)"><div class="niw">👤</div><span>Profile</span><div class="npip"></div></button>
+  </div>
+</div>
+
+</div><!-- /app -->
+<script>
+/* ─── STORAGE ─── */
+const SK='nutricare_v2';
+const DEF={age:0,weight:0,height:0,targetWeight:0,gender:'',activity:'moderate',goals:[],conditions:[],healthNotes:'',calGoal:2000,waterGoal:2.5,protGoal:120,carbGoal:250,fatGoal:70,calConsumed:0,waterConsumed:0,protein:0,carbs:0,fats:0,meals:0,todayDate:'',streak:0,lastActive:'',mood:-1,moodMsg:'',weekData:[0,0,0,0,0,0,0],onboardDone:false,reminders:{w:true,m:true,e:false},startDate:''};
+function loadS(){try{const r=localStorage.getItem(SK);if(r)return Object.assign({},DEF,JSON.parse(r));}catch(e){}return Object.assign({},DEF);}
+function saveS(){try{localStorage.setItem(SK,JSON.stringify(S));}catch(e){}}
+let S=loadS();
+
+function dailyReset(){
+  const today=new Date().toDateString();
+  if(S.todayDate!==today){
+    if(S.todayDate&&S.calConsumed>0){
+      const yd=new Date(S.todayDate);const slot=(yd.getDay()+6)%7;
+      S.weekData[slot]=S.calConsumed;
+    }
+    if(S.todayDate){
+      const diff=(new Date(today)-new Date(S.todayDate))/(864e5);
+      if(diff===1&&S.calConsumed>0)S.streak++;
+      else if(diff>1)S.streak=0;
+    }
+    S.calConsumed=0;S.waterConsumed=0;S.protein=0;S.carbs=0;S.fats=0;S.meals=0;
+    S.todayDate=today;S.mood=-1;S.moodMsg='';
+    saveS();
+  }
+}
+
+/* ─── CLOCK ─── */
+function clk(){const t=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});document.querySelectorAll('.clock-chip').forEach(e=>e.textContent=t);}
+clk();setInterval(clk,10000);
+
+/* ─── TICKER ─── */
+const TICKS=['💧 Stay hydrated — even a sip helps ·','🌿 Small meals are valid ·','💚 Rest is health too ·','🔥 Consistency beats perfection ·','🌸 Your body does its best every day ·','✨ Small wins matter ·','🤍 You are more than a number ·','💪 Muscle is built one meal at a time ·','⭐ NutriCare by Ewan — you got this ·','🌙 Be kind to yourself tonight ·'];
+document.getElementById('tick-txt').textContent=TICKS.join('  ').repeat(3);
+
+/* ─── FALLING HEARTS ─── */
+function spawnHeart(x){
+  const h=document.createElement('div');h.className='fh';
+  h.textContent=['❤️','🧡','💛','💚','💙','💜','🩷'][Math.floor(Math.random()*7)];
+  h.style.left=(x!=null?x-12:Math.random()*window.innerWidth)+'px';
+  h.style.top='0px';const d=2+Math.random()*2;
+  h.style.animationDuration=d+'s';h.style.fontSize=(18+Math.random()*14)+'px';
+  document.body.appendChild(h);setTimeout(()=>h.remove(),(d+.3)*1000);
+}
+
+/* ─── SKY HEARTS ─── */
+const COMPLIMENTS=['❤️ You are doing amazing!','💚 Your effort matters more than you know.','✨ Every step forward counts.','🌸 You deserve to feel good today.','💪 Strong, capable, incredible — that\'s you.','🌿 Progress is happening, even when invisible.','💜 Be as kind to yourself as you are to others.','🔥 You\'ve got the fire — keep going!','🤍 Healing isn\'t linear. You\'re doing great.','⭐ NutriCare by Ewan believes in you, always.'];
+function createSkyHearts(){
+  [['8%','15%',0],['52%','35%',1.5],['78%','55%',0.8]].forEach(([l,t,d])=>{
+    const h=document.createElement('div');h.className='sh';h.textContent='❤️';
+    h.style.left=l;h.style.top=t;h.style.animationDelay=d+'s';
+    h.onclick=(e)=>{
+      for(let i=0;i<8;i++)setTimeout(()=>spawnHeart(e.clientX+Math.random()*60-30),i*70);
+      showNotif(COMPLIMENTS[Math.floor(Math.random()*COMPLIMENTS.length)],3500);
+      h.style.transform='scale(1.6)';setTimeout(()=>h.style.transform='',350);
+    };
+    document.body.appendChild(h);
+  });
+}
+
+/* ─── MOOD FULLSCREEN ─── */
+const QUOTES=[
+  ['You are enough,<br>exactly as you are.','Just being here takes <em>courage.</em>'],
+  ['One day at a time,<br>one meal at a time.','<em>Tiny steps</em> are still steps forward.'],
+  ['Your body works so hard for you,<br>even on hard days.','<em>Thank it</em> with a little kindness.'],
+  ['Strength isn\'t always visible.<br>Sometimes it\'s just <em>showing up.</em>','And you showed up today. 💚'],
+  ['You deserve<br><em>nourishment, rest, and joy.</em>','Not as a reward — but always.'],
+  ['The fact you\'re tracking<br>means you <em>care about yourself.</em>','That\'s love.'],
+  ['You are not your worst day.<br>You are not a calorie count.','You are <em>so much more.</em>'],
+  ['Progress, not perfection.<br><em>Always.</em>','Every win deserves a celebration.'],
+  ['Your journey is <em>yours.</em><br>Compare yourself to no one.','You\'re exactly where you need to be.'],
+  ['NutriCare by Ewan<br>believes in you <em>completely.</em>','You\'ve got this. ❤️'],
+];
+let htaps=0,lastQ=-1;
+function openMood(){htaps=0;document.getElementById('htcount').textContent='tap ∞';document.getElementById('mq').innerHTML='Tap the <em>heart</em> and see what happens...';document.getElementById('mood-fs').classList.add('open');document.body.style.overflow='hidden';}
+function closeMood(){document.getElementById('mood-fs').classList.remove('open');document.body.style.overflow='';if(htaps>0){S.mood=Math.min(4,Math.floor(htaps/2));S.moodMsg=document.getElementById('mq').innerText.slice(0,80);document.getElementById('mood-sub').textContent='Feeling good — logged ✓';saveS();}}
+function tapHeart(){
+  htaps++;document.getElementById('htcount').textContent='tapped '+htaps+'x ✨';
+  let qi;do{qi=Math.floor(Math.random()*QUOTES.length);}while(qi===lastQ&&QUOTES.length>1);lastQ=qi;
+  const [h,s]=QUOTES[qi];const mq=document.getElementById('mq');
+  mq.style.opacity='0';setTimeout(()=>{mq.innerHTML='<em style="color:var(--rose)">'+h+'</em><br><span style="font-size:15px;color:var(--text2)">'+s+'</span>';mq.style.opacity='1';},200);
+  for(let i=0;i<5+Math.floor(Math.random()*4);i++)setTimeout(()=>spawnHeart(window.innerWidth/2+Math.random()*80-40),i*55);
+}
+
+/* ─── ONBOARDING NAV ─── */
+function go(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  if(n===5)calcResults();
+  if(n===6){S.onboardDone=true;if(!S.startDate)S.startDate=new Date().toDateString();saveS();populateDash();populateRecs();populateProfile();}
+  document.getElementById('s'+n).classList.add('active');window.scrollTo(0,0);
+}
+
+/* ─── SELECTION ─── */
+function selOne(k,v,el){S[k]=v;el.parentElement.querySelectorAll('.choice').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
+function toggleGoal(g,el){
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')){if(!S.goals.includes(g))S.goals.push(g);}else{S.goals=S.goals.filter(x=>x!==g);}
+  const show=S.goals.includes('gain')||S.goals.includes('muscle');
+  document.getElementById('tw-reveal').style.display=show?'block':'none';
+  const tm=document.getElementById('goal-toast-msg');
+  if(S.goals.includes('muscle')&&S.goals.includes('lose'))tm.textContent='Recomposition goals — we\'ll balance both for you 🔥💪';
+  else if(S.goals.includes('muscle'))tm.textContent='💪 Muscle goal set! Protein targets will be boosted.';
+  else if(S.goals.length>1)tm.textContent='Multiple goals — your plan balances all of them ✨';
+  else if(S.goals.length===1)tm.textContent='Great choice! Your plan will be tailored to this.';
+  else tm.textContent='Select your goals — your plan will be tailored to them.';
+}
+function toggleCond(c,el){
+  el.classList.toggle('sel');
+  if(el.classList.contains('sel')){if(!S.conditions.includes(c))S.conditions.push(c);}else{S.conditions=S.conditions.filter(x=>x!==c);}
+  const t=document.getElementById('cond-toast');
+  if(S.conditions.includes('eating'))t.querySelector('span:last-child').textContent="You're brave for being here. We'll be as gentle as possible 🤍";
+  else if(S.conditions.includes('recovery'))t.querySelector('span:last-child').textContent="Recovery takes real strength. We see you 🌸";
+}
+
+/* ─── CALCULATIONS ─── */
+function calcResults(){
+  const age=parseInt(document.getElementById('i-age').value)||30;
+  const w=parseFloat(document.getElementById('i-weight').value)||65;
+  const h=parseFloat(document.getElementById('i-height').value)||170;
+  const tw=parseFloat((document.getElementById('i-target2').value||document.getElementById('i-target').value)||'0')||0;
+  S.age=age;S.weight=w;S.height=h;S.targetWeight=tw;
+  S.healthNotes=document.getElementById('health-notes').value;
+
+  const mult={sedentary:1.2,light:1.375,moderate:1.55,very:1.725,extreme:1.9}[S.activity]||1.55;
+  const bmr=S.gender==='female'?(447.593+9.247*w+3.098*h-4.330*age):(88.362+13.397*w+4.799*h-5.677*age);
+  const tdee=Math.round(bmr*mult);
+
+  const g=S.goals;
+  let adj=tdee;
+  if(g.includes('lose')&&g.includes('muscle'))adj=Math.max(1400,tdee-200);
+  else if(g.includes('lose'))adj=Math.max(1200,tdee-500);
+  else if(g.includes('muscle'))adj=tdee+250;
+  else if(g.includes('gain'))adj=tdee+300;
+  else if(g.includes('recover'))adj=tdee+200;
+
+  const water=Math.round(w*0.033*10)/10;
+  const bmi=Math.round(w/(h/100*h/100)*10)/10;
+  const pf=g.includes('muscle')?2.2:g.includes('gain')?2:1.6;
+  const prot=Math.round(w*pf);
+
+  S.calGoal=adj;S.waterGoal=water;S.protGoal=prot;
+  S.carbGoal=Math.round(adj*0.45/4);S.fatGoal=Math.round(adj*0.30/9);
+
+  const bmiC=bmi<18.5?'underweight':bmi<25?'healthy':bmi<30?'overweight':'obese';
+  const gLabel=g.length?g.map(x=>({lose:'Lose weight',maintain:'Maintain',gain:'Gain weight',muscle:'Build muscle',endurance:'Endurance',energy:'More energy',health:'General health',recover:'Recovery',stress:'Reduce stress eating',sleep:'Better sleep'}[x]||x)).join(', '):'General health';
+
+  document.getElementById('res-rows').innerHTML=[
+    ['Maintenance calories',tdee+' kcal/day','var(--text2)'],
+    ['Your daily goal',adj+' kcal/day','var(--sage)'],
+    ['Daily water goal',water+'L','var(--sky)'],
+    ['Protein goal',prot+'g / day','var(--amber)'],
+    ['Carb goal',S.carbGoal+'g / day','var(--purple)'],
+    ['Fat goal',S.fatGoal+'g / day','var(--rose)'],
+    ['BMI',bmi+' ('+bmiC+')','var(--text2)'],
+    ...(tw?[['Target weight',tw+'kg ('+(tw>w?'+':'')+(tw-w).toFixed(1)+'kg)','var(--amber)']]:[]),
+    ['Goals',gLabel,'var(--purple)'],
+  ].map(([l,v,c])=>`<div class="rr"><span class="rl">${l}</span><span class="rv" style="color:${c};font-size:12px">${v}</span></div>`).join('');
+
+  const conds=S.conditions.filter(c=>c!=='none');
+  if(conds.length){
+    document.getElementById('health-adv-card').style.display='block';
+    const msgs=[];
+    if(conds.includes('diabetes'))msgs.push('Diabetes: focus on low-GI foods and consistent carbohydrate timing.');
+    if(conds.includes('digestive'))msgs.push('Digestive concerns: smaller, frequent meals with easily digestible foods.');
+    if(conds.includes('recovery'))msgs.push('Recovery: your body needs extra protein and micronutrients. Small amounts count.');
+    if(conds.includes('eating'))msgs.push("Eating difficulties: these numbers are soft guidelines only. Please work with a professional.");
+    if(conds.includes('hormonal')||conds.includes('thyroid'))msgs.push('Hormonal/thyroid conditions can affect metabolism. Consult your doctor for adjustments.');
+    if(conds.includes('heart')||conds.includes('kidney'))msgs.push('Heart/kidney conditions need specific dietary management — please consult your healthcare team.');
+    document.getElementById('health-adv-text').textContent=msgs.join(' ');
+  }
+
+  const rt=document.getElementById('res-toast-msg');
+  if(conds.includes('eating')){document.querySelector('#res-toast .ti').textContent='🤍';rt.textContent="You're so brave for being here. We'll support you gently.";}
+  else if(g.includes('muscle')){document.querySelector('#res-toast .ti').textContent='💪';rt.textContent='Muscle goal set! Your protein target is adjusted to support your gains.';}
+  else if(conds.length){document.querySelector('#res-toast .ti').textContent='💜';rt.textContent='Living with health challenges takes real strength. You should be proud.';}
+
+  if(!S.reminders){S.reminders={w:true,m:true,e:false};}
+  saveS();
+}
+
+/* ─── DASHBOARD ─── */
+const SUPPORTS=[['✨','You\'re doing great today!'],['💪','You got this. Your body thanks you.'],['🌸','Hope you\'re feeling better today.'],['💚','Every choice adds up. You\'re making them.'],['🌙','Rest and nourishment are both valid goals.'],['⭐','NutriCare by Ewan is rooting for you!'],['🔥','Progress is happening — keep going!'],['🤍','Kindness to yourself is the most important habit.']];
+
+function populateDash(){
+  const pct=Math.min(1,S.calConsumed/(S.calGoal||1));
+  document.getElementById('cal-ring').style.strokeDashoffset=478-(478*pct);
+  document.getElementById('ring-v').textContent=S.calConsumed;
+  document.getElementById('ring-g').textContent=S.calGoal;
+  document.getElementById('s-rem').textContent=Math.max(0,S.calGoal-S.calConsumed);
+  document.getElementById('s-meals').textContent=S.meals;
+  document.getElementById('s-wml').textContent=Math.round(S.waterConsumed*1000)+'ml';
+
+  const pg=S.protGoal||120,cg=S.carbGoal||250,fg=S.fatGoal||70;
+  document.getElementById('p-lbl').textContent=S.protein+'/'+pg+'g';
+  document.getElementById('c-lbl').textContent=S.carbs+'/'+cg+'g';
+  document.getElementById('f-lbl').textContent=S.fats+'/'+fg+'g';
+  document.getElementById('p-bar').style.width=Math.min(100,S.protein/pg*100)+'%';
+  document.getElementById('c-bar').style.width=Math.min(100,S.carbs/cg*100)+'%';
+  document.getElementById('f-bar').style.width=Math.min(100,S.fats/fg*100)+'%';
+
+  // muscle/gain progress bar
+  const mb=document.getElementById('mbanner');
+  if((S.goals.includes('muscle')||S.goals.includes('gain'))&&S.targetWeight>0&&S.weight>0){
+    mb.classList.add('show');
+    const diff=S.targetWeight-S.weight;
+    const prog=diff>0?0:Math.min(100,100); // static for demo (weight would update via journal)
+    document.getElementById('mbar').style.width='0%';
+    document.getElementById('mpct-lbl').textContent='tracking...';
+    document.getElementById('m-start').textContent=S.weight+'kg';
+    document.getElementById('m-target').textContent=S.targetWeight+'kg';
+  } else mb.classList.remove('show');
+
+  buildWaterDrops();updateWaterUI();buildBars('bars','blabels');buildWeekDots();
+
+  const sup=SUPPORTS[Math.floor(Math.random()*SUPPORTS.length)];
+  document.getElementById('dash-icon').textContent=sup[0];
+  document.getElementById('dash-msg').textContent=sup[1];
+  document.getElementById('streak-n').textContent=S.streak;
+
+  if(S.moodMsg){document.getElementById('mood-sub').textContent=S.moodMsg.slice(0,60)+(S.moodMsg.length>60?'…':'');document.getElementById('mood-icon').textContent='❤️';}
+}
+
+function buildWaterDrops(){
+  const c=document.getElementById('wdrops');if(!c)return;c.innerHTML='';
+  const total=Math.round(S.waterGoal*1000/250);const filled=Math.round(S.waterConsumed*1000/250);
+  for(let i=0;i<total;i++){const d=document.createElement('div');d.className='wd'+(i<filled?' filled':'');d.textContent=i<filled?'💧':'';d.onclick=()=>{S.waterConsumed=Math.round((i+1)*0.25*100)/100;saveS();updateWaterUI();buildWaterDrops();};c.appendChild(d);}
+}
+function addWater(){S.waterConsumed=Math.min(S.waterGoal,Math.round((S.waterConsumed+0.25)*100)/100);saveS();updateWaterUI();buildWaterDrops();}
+function updateWaterUI(){
+  const e=document.getElementById('w-label');if(e)e.textContent=S.waterConsumed+'L / '+S.waterGoal+'L';
+  const b=document.getElementById('w-bar');if(b)b.style.width=Math.min(100,S.waterConsumed/(S.waterGoal||1)*100)+'%';
+  document.getElementById('s-wml').textContent=Math.round(S.waterConsumed*1000)+'ml';
+}
+function buildBars(bId,lId){
+  const bc=document.getElementById(bId);const lc=document.getElementById(lId);
+  if(!bc||!lc)return;bc.innerHTML='';lc.innerHTML='';
+  const days=['M','T','W','T','F','S','S'];
+  const max=Math.max(...S.weekData,S.calGoal,1);
+  const today=(new Date().getDay()+6)%7;
+  S.weekData.forEach((v,i)=>{
+    const col=document.createElement('div');col.className='bc';
+    const bar=document.createElement('div');bar.className='bar';
+    bar.style.height=(v>0?Math.round(v/max*74):4)+'px';
+    bar.style.background=i===today?'linear-gradient(180deg,#a78bfa,#7c6fca)':v===0?'rgba(255,255,255,0.06)':v>=S.calGoal?'linear-gradient(180deg,#4ecb8c,#2da66b)':'linear-gradient(180deg,#f0b155,#d4922e)';
+    col.appendChild(bar);bc.appendChild(col);
+    const dl=document.createElement('div');dl.className='bday';dl.textContent=days[i];dl.style.flex='1';dl.style.textAlign='center';
+    if(i===today)dl.style.color='var(--purple)';lc.appendChild(dl);
+  });
+}
+function buildWeekDots(){const c=document.getElementById('wdots');if(!c)return;c.innerHTML='';S.weekData.forEach(v=>{const d=document.createElement('div');d.className='wdt'+(v>0?' hit':'');c.appendChild(d);});}
+
+/* ─── FOOD LOG ─── */
+const FOODS=[{n:'Grilled chicken breast',k:285,p:54,c:0,f:6,cf:92},{n:'Salmon with vegetables',k:380,p:42,c:12,f:18,cf:88},{n:'Greek yogurt with berries',k:180,p:15,c:24,f:3,cf:91},{n:'Avocado toast',k:310,p:9,c:32,f:17,cf:85},{n:'Pasta with tomato sauce',k:490,p:16,c:88,f:8,cf:83},{n:'Oatmeal with banana',k:330,p:10,c:62,f:6,cf:89},{n:'Lentil soup',k:240,p:18,c:38,f:3,cf:87},{n:'Protein shake',k:220,p:35,c:12,f:4,cf:94},{n:'Chicken & rice bowl',k:520,p:48,c:52,f:10,cf:90},{n:'Stir-fry tofu with rice',k:410,p:22,c:56,f:12,cf:80}];
+function triggerScan(){showFood(FOODS[Math.floor(Math.random()*FOODS.length)]);}
+function analyzeMeal(){
+  const t=document.getElementById('food-in').value.trim();if(!t)return;
+  const pf=S.goals.includes('muscle')?1.4:1;
+  const k=Math.round(150+Math.random()*450);const p=Math.round((k*0.06+Math.random()*20)*pf);
+  const f=Math.round(k*0.02+Math.random()*15);const c=Math.max(0,Math.round((k-p*4-f*9)/4));
+  showFood({n:t,k,p,c,f,cf:Math.round(68+Math.random()*22)});
+}
+function showFood(food){
+  S.pendingFood=food;
+  document.getElementById('scan-zone').style.display='none';document.getElementById('food-res').style.display='none';document.getElementById('food-load').style.display='block';
+  setTimeout(()=>{document.getElementById('food-load').style.display='none';document.getElementById('food-res').style.display='block';document.getElementById('food-nm').textContent=food.n;document.getElementById('mc-c').textContent=food.k+' kcal';document.getElementById('mc-p').textContent=food.p+'g protein';document.getElementById('mc-cb').textContent=food.c+'g carbs';document.getElementById('mc-f').textContent=food.f+'g fat';document.getElementById('conf-f').style.width=food.cf+'%';document.getElementById('conf-p').textContent=food.cf+'%';},1800);
+}
+function addMeal(){
+  if(!S.pendingFood)return;const f=S.pendingFood;
+  S.calConsumed+=f.k;S.protein+=f.p;S.carbs+=f.c;S.fats+=f.f;S.meals++;
+  S.weekData[(new Date().getDay()+6)%7]+=f.k;S.pendingFood=null;saveS();
+  document.getElementById('food-res').style.display='none';document.getElementById('scan-zone').style.display='block';document.getElementById('food-in').value='';
+  showNotif('✓ '+f.n+' added to today');navTo('home',document.getElementById('nb-h'));populateDash();
+}
+
+/* ─── RECS ─── */
+const BASE_RECS=[{icon:'🥣',t:'Easy breakfasts',d:'Oatmeal, scrambled eggs, or Greek yogurt provide steady energy with minimal prep.',cls:'rt-s'},{icon:'🥗',t:'Balanced lunches',d:'Lean protein + complex carbs + healthy fat for sustained energy.',cls:'rt-k'},{icon:'🫐',t:'Smart snacking',d:'Berries, nuts, hummus — keep blood sugar stable between meals.',cls:'rt-a'},{icon:'💧',t:'Morning hydration',d:'Start each day with a glass of water before anything else.',cls:'rt-k'},{icon:'🌙',t:'Light evening meals',d:'Soups, steamed vegetables, lean proteins support better sleep.',cls:'rt-s'},{icon:'🧘',t:'Mindful eating',d:'Slow down, chew thoroughly, and listen to your hunger cues.',cls:'rt-r'}];
+const GOAL_RECS={muscle:{icon:'💪',t:'Muscle-building nutrition',d:'Hit your protein target every day. Eat in a slight calorie surplus and prioritize compound exercises.',cls:'rt-a'},lose:{icon:'🔥',t:'Sustainable fat loss',d:'A 500kcal deficit = ~0.5kg/week. Never go below 1200kcal. High protein keeps you full.',cls:'rt-s'},gain:{icon:'📈',t:'Healthy weight gain',d:'Calorie-dense foods like nut butter, avocado, whole milk, and oats help you gain without feeling stuffed.',cls:'rt-a'},endurance:{icon:'🏃',t:'Endurance fueling',d:'Complex carbs (oats, rice, sweet potato) are your best friend. Eat 2–3h before training.',cls:'rt-k'},sleep:{icon:'🌙',t:'Better sleep nutrition',d:'Avoid heavy meals 2–3h before bed. Magnesium-rich foods (nuts, leafy greens) support sleep quality.',cls:'rt-p'},stress:{icon:'🧘',t:'Mindful eating for stress',d:'Pause 5 minutes before eating to check if it\'s hunger or emotion. Both are valid — but knowing helps.',cls:'rt-r'},energy:{icon:'⚡',t:'Boosting energy',d:'Iron-rich foods, complex carbs, and consistent meal timing sustain energy all day.',cls:'rt-a'}};
+const COND_RECS={diabetes:{icon:'🩺',t:'Diabetes-friendly eating',d:'Low-GI foods, consistent carb portions, no sugary drinks. Consistency is key.',cls:'rt-s'},digestive:{icon:'🌿',t:'Gentle digestion',d:'Steamed vegetables, bone broth, and eggs are gentle and nourishing.',cls:'rt-a'},recovery:{icon:'❤️',t:'Recovery nourishment',d:'Extra protein, vitamins, minerals. Small, frequent meals often work best.',cls:'rt-r'},eating:{icon:'🤍',t:'Be gentle with yourself',d:"Any nourishment is a win. Focus on safe foods today. You're doing enough.",cls:'rt-r'},hormonal:{icon:'🌸',t:'Hormone-supporting foods',d:'Leafy greens, healthy fats, zinc-rich foods may support hormonal balance.',cls:'rt-a'},thyroid:{icon:'🦋',t:'Thyroid nutrition',d:'Brazil nuts, seafood, eggs provide selenium and iodine for thyroid support.',cls:'rt-s'},heart:{icon:'💙',t:'Heart-healthy choices',d:'Mediterranean style — olive oil, fish, nuts, legumes, plenty of vegetables.',cls:'rt-k'}};
+
+function populateRecs(){
+  const el=document.getElementById('recs-list');if(!el)return;
+  const gi=S.goals.filter(g=>GOAL_RECS[g]).map(g=>GOAL_RECS[g]);
+  const ci=S.conditions.filter(c=>c!=='none'&&COND_RECS[c]).map(c=>COND_RECS[c]);
+  const rem=Math.max(0,4-gi.length-ci.length);
+  el.innerHTML=[...ci,...gi,...BASE_RECS.slice(0,rem+1)].map(r=>`<div class="ri"><div class="rt-th ${r.cls}">${r.icon}</div><div class="rb"><div class="rt">${r.t}</div><div class="rd">${r.d}</div></div></div>`).join('');
+}
+
+/* ─── PROFILE ─── */
+function populateProfile(){
+  const aL={sedentary:'Sedentary',light:'Lightly active',moderate:'Moderately active',very:'Very active',extreme:'Extremely active'};
+  const gL=S.goals.length?S.goals.map(x=>({lose:'Lose weight',maintain:'Maintain',gain:'Gain weight',muscle:'Build muscle',endurance:'Endurance',energy:'More energy',health:'General health',recover:'Recovery',stress:'Reduce stress eating',sleep:'Better sleep'}[x]||x)).join(', '):'Not set';
+  const rows=[['Daily calorie goal',S.calGoal+' kcal','var(--sage)'],['Daily water goal',S.waterGoal+'L','var(--sky)'],['Protein goal',S.protGoal+'g/day','var(--amber)'],['Carb goal',S.carbGoal+'g/day','var(--purple)'],['Fat goal',S.fatGoal+'g/day','var(--rose)'],['Activity level',aL[S.activity]||'—','var(--text)'],['Goals',gL,'var(--purple)'],...(S.targetWeight?[['Target weight',S.targetWeight+'kg','var(--amber)']]:[]),['Streak',S.streak+' days 🔥','var(--amber)'],['Member since',S.startDate||'Today','var(--text2)']];
+  const pr=document.getElementById('prof-rows');if(pr)pr.innerHTML=rows.map(([l,v,c])=>`<div class="rr"><span class="rl">${l}</span><span class="rv" style="color:${c};font-size:12px">${v}</span></div>`).join('');
+  const wi=document.getElementById('weekly-ins');
+  if(wi){const logged=S.weekData.filter(v=>v>0);const avg=logged.length?Math.round(logged.reduce((a,b)=>a+b,0)/logged.length):0;wi.innerHTML=`<div class="rr"><span class="rl">Avg daily calories</span><span class="rv">${avg} kcal</span></div><div class="rr"><span class="rl">Best day</span><span class="rv" style="color:var(--sage)">${Math.max(...S.weekData,0)} kcal</span></div><div class="rr"><span class="rl">Days logged</span><span class="rv">${logged.length} / 7</span></div><div class="rr"><span class="rl">Water today</span><span class="rv" style="color:var(--sky)">${S.waterConsumed}L</span></div><div class="rr"><span class="rl">Meals today</span><span class="rv">${S.meals}</span></div>`;}
+  const pd=document.getElementById('prof-date');if(pd&&S.startDate)pd.textContent='On this journey since '+S.startDate;
+  buildBars('bars2','blabels2');
+}
+
+/* ─── NAV ─── */
+function navTo(dest,el){
+  const map={home:'s6',log:'s7',recs:'s8',profile:'s9'};
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(map[dest]).classList.add('active');
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  if(el)el.classList.add('active');
+  window.scrollTo(0,0);
+  if(dest==='recs')populateRecs();
+  if(dest==='profile')populateProfile();
+  if(dest==='home')populateDash();
+  // Floating heart motivation system: only active on the dashboard screen
+  if(dest==='home') fmhStart(); else fmhStop();
+}
+
+/* ─── NOTIF ─── */
+function showNotif(msg,dur=3000){const n=document.getElementById('notif');document.getElementById('nmsg').textContent=msg;n.classList.add('show');setTimeout(()=>n.classList.remove('show'),dur);}
+
+/* ─── REMINDERS ─── */
+setInterval(()=>{if(S.reminders?.w&&S.waterConsumed<S.waterGoal&&S.onboardDone){const m=['💧 Time for a sip of water!','💧 Hydration check — how are you doing?','💧 Have you had water recently?'];showNotif(m[Math.floor(Math.random()*m.length)],4000);}},5*60*1000);
+setInterval(()=>{if(S.reminders?.m&&S.meals<3&&S.onboardDone)showNotif('🍽️ Don\'t forget to log your meal!',4000);},4*60*1000);
+setInterval(()=>{if(new Date().getHours()===20&&S.reminders?.e&&S.onboardDone)showNotif('🌙 Evening check-in — how did today go? Log your mood!',5000);},60*60*1000);
+
+/* ─── RESET ─── */
+function resetApp(){if(confirm('Reset all NutriCare data? This cannot be undone.')){localStorage.removeItem(SK);location.reload();}}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FLOATING HEART MOTIVATION SYSTEM  v3
+   ───────────────────────────────────────────────────────────────────────
+   Hearts spawn exclusively from the LEFT or RIGHT edges, drifting inward
+   toward centre as they fall — keeps the content area clear while making
+   the UI feel alive at the periphery.
+
+   New in v3:
+   • Side-only spawn (fmh-from-left / fmh-from-right keyframes)
+   • 4 streak tiers incl. rare golden heart (14+ days)
+   • 65+ quotes: time-of-day aware, goal-personalised, last-3 dedup
+   • Streak milestone celebrations (3 / 7 / 14 / 30 days)
+   • Inward-biased burst on click
+   • Graceful fade-out when navigating away
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const fmh_state = {
+  activeHeart:       null,   // DOM node of the live heart, or null
+  scheduleTimer:     null,   // setTimeout ID for next spawn
+  running:           false,  // true only when dashboard (s6) is visible
+  recentQuotes:      [],     // last 3 quote indices — prevents repetition
+  lastSide:          null,   // 'left' | 'right' — alternated per spawn
+  celebratedStreaks: new Set(), // milestone streaks already celebrated
+};
+
+/* ── Streak tier configuration ─────────────────────────────────────── */
+const FMH_TIERS = [
+  { minStreak:  0, maxStreak:  2, emoji: '❤️',  cssClass: 'fmh--tier0', tip: 'tap me ✨' },
+  { minStreak:  3, maxStreak:  6, emoji: '💜',  cssClass: 'fmh--tier1', tip: 'a little gift 💜' },
+  { minStreak:  7, maxStreak: 13, emoji: '💖',  cssClass: 'fmh--tier2', tip: 'you earned this 💖' },
+  { minStreak: 14, maxStreak: Infinity, emoji: '💛', cssClass: 'fmh--tier3', tip: 'golden streak ✨' },
+];
+
+function fmhGetTier() {
+  const streak = typeof S !== 'undefined' ? (S.streak || 0) : 0;
+  return FMH_TIERS.find(t => streak >= t.minStreak && streak <= t.maxStreak) ?? FMH_TIERS[0];
+}
+
+/* ── Quote bank — 65+ entries, 12 categories ───────────────────────── */
+/*   Goal tags:    lose | muscle | gain | endurance | sleep | stress      */
+/*                 energy | health | recover | maintain                   */
+/*   Time tags:    morning | afternoon | evening                          */
+/*   Universal:    [] — always eligible as fallback                       */
+const FMH_QUOTES = [
+  /* WEIGHT LOSS */
+  { text: '🔥 Every healthy choice compounds. You\'re building a new version of yourself.', tags: ['lose'] },
+  { text: '💚 The scale doesn\'t capture your strength. Your consistency does.', tags: ['lose'] },
+  { text: '🌿 Progress isn\'t always visible. Trust what you\'re building quietly.', tags: ['lose'] },
+  { text: '✨ Small deficits, big results — you\'re doing it exactly right.', tags: ['lose'] },
+  { text: '🍃 Sustainable change feels slow. It\'s not. You\'re already different from last month.', tags: ['lose'] },
+  { text: '💛 The goal isn\'t perfection. It\'s showing up again tomorrow.', tags: ['lose'] },
+  { text: '🌸 Your body is changing even on the days it doesn\'t feel like it.', tags: ['lose'] },
+  { text: '⚖️ One meal doesn\'t define progress. The pattern does. Keep the pattern.', tags: ['lose'] },
+
+  /* MUSCLE BUILD */
+  { text: '💪 Muscles are built in the kitchen and the gym. You\'re winning on both fronts.', tags: ['muscle'] },
+  { text: '🏋️ Every gram of protein is a brick in the foundation you\'re building.', tags: ['muscle'] },
+  { text: '⚡ Strength isn\'t given — it\'s earned. And you\'re earning it every single day.', tags: ['muscle'] },
+  { text: '🔥 Rest days build muscle too. Recovery is not laziness — it\'s the work.', tags: ['muscle'] },
+  { text: '💥 You\'re not just getting stronger physically. Mental toughness is training too.', tags: ['muscle'] },
+  { text: '🥩 Hit that protein goal today. Your future self will thank you.', tags: ['muscle'] },
+  { text: '📈 Growth requires discomfort. You\'re sitting in it and choosing to stay. That\'s rare.', tags: ['muscle'] },
+  { text: '🌟 The person you\'re becoming is worth every rep, every meal, every rest day.', tags: ['muscle'] },
+
+  /* WEIGHT GAIN */
+  { text: '📈 Nourishing yourself fully is an act of self-respect. Keep going.', tags: ['gain'] },
+  { text: '🍽️ Every extra meal is progress. You\'re building the body you deserve.', tags: ['gain'] },
+  { text: '🥑 Calorie-dense foods are your friend. Eat them without guilt.', tags: ['gain'] },
+  { text: '💛 Gaining weight healthily is just as valid and brave as losing it.', tags: ['gain'] },
+  { text: '🌿 Your body is learning to trust abundance. Be patient and consistent with it.', tags: ['gain'] },
+
+  /* ENERGY & HEALTH */
+  { text: '⚡ Your energy is a direct reflection of how well you\'re caring for yourself.', tags: ['energy', 'health'] },
+  { text: '🌸 Vitality is built one good habit at a time. You\'re stacking them beautifully.', tags: ['energy', 'health'] },
+  { text: '🌿 Your body thanks you for every nourishing choice — even when you can\'t feel it yet.', tags: ['energy', 'health'] },
+  { text: '☀️ Healthy energy isn\'t hype. It\'s what happens when you keep showing up.', tags: ['energy', 'health'] },
+  { text: '💚 What you put in your body today is a letter to your future self. Make it kind.', tags: ['energy', 'health'] },
+  { text: '🫀 Your heart works 24 hours a day for you. Every good meal is a thank-you note to it.', tags: ['health'] },
+
+  /* ENDURANCE */
+  { text: '🏃 Endurance isn\'t just physical. You\'re training your mind too.', tags: ['endurance'] },
+  { text: '🌊 Real stamina is built in the quiet sessions — not the dramatic ones. Keep going.', tags: ['endurance'] },
+  { text: '⏱️ You don\'t have to go faster. You just have to keep going. That\'s endurance.', tags: ['endurance'] },
+  { text: '🍌 Fuel matters as much as training. You\'re learning to listen to your body.', tags: ['endurance'] },
+
+  /* SLEEP */
+  { text: '🌙 Good sleep is elite recovery. Protecting it is a performance decision.', tags: ['sleep'] },
+  { text: '😴 Rest is not a reward for hard work. It IS the hard work.', tags: ['sleep', 'evening'] },
+  { text: '🌟 Your body heals and grows during sleep. Tonight is part of the training.', tags: ['sleep', 'evening'] },
+  { text: '🫖 A calm evening routine is a superpower. You\'re building one.', tags: ['sleep'] },
+
+  /* STRESS EATING */
+  { text: '🧘 Noticing your patterns is the first step to changing them. You\'re already aware.', tags: ['stress'] },
+  { text: '🤍 Sometimes eating is emotional. That\'s human, not a failure. Notice it with kindness.', tags: ['stress'] },
+  { text: '🌿 The pause between a craving and a choice is where your power lives.', tags: ['stress'] },
+  { text: '🫶 You don\'t need to eat perfectly. You need to eat kindly — with kindness toward yourself.', tags: ['stress'] },
+
+  /* RECOVERY */
+  { text: '❤️‍🩹 Healing is not linear. Today being hard doesn\'t mean tomorrow won\'t be better.', tags: ['recover'] },
+  { text: '🌱 Recovery takes more energy than people see. Every small act of nourishment counts.', tags: ['recover'] },
+  { text: '🤍 You don\'t need to do everything right now. Just do one gentle thing for your body today.', tags: ['recover'] },
+  { text: '🌸 The bravest thing you\'re doing is just taking care of yourself. That\'s enough.', tags: ['recover'] },
+
+  /* MAINTAIN */
+  { text: '⚖️ Maintenance is mastery. Long-term balance is a skill most people never develop.', tags: ['maintain'] },
+  { text: '🏡 Stability is a form of success that doesn\'t get celebrated enough. You\'re doing it.', tags: ['maintain'] },
+
+  /* TIME-OF-DAY */
+  { text: '☀️ Good morning! Starting your day with intention is already a win.', tags: ['morning'] },
+  { text: '🌿 Morning hydration sets the tone for the whole day. First glass — done?', tags: ['morning'] },
+  { text: '🥣 Breakfast is a message to your body that you\'re prioritising it today.', tags: ['morning'] },
+  { text: '🌤️ Every morning is a fresh start. Whatever yesterday looked like, today is new.', tags: ['morning'] },
+  { text: '🌞 Afternoon check-in: how are your energy levels? Halfway through — well done.', tags: ['afternoon'] },
+  { text: '🫗 Afternoon slump? Try water first. Dehydration often mimics fatigue.', tags: ['afternoon'] },
+  { text: '💛 You made it through the day. Whatever you ate or didn\'t — you\'re still here.', tags: ['evening'] },
+  { text: '🌙 Evening is for winding down. Tomorrow you can do more. Tonight, just rest.', tags: ['evening'] },
+  { text: '🌙 Log your evening meal with kindness. No guilt allowed here — only growth.', tags: ['evening'] },
+
+  /* HYDRATION */
+  { text: '💧 Water is the most underrated performance enhancer. Keep sipping.', tags: ['energy', 'health'] },
+  { text: '🫗 Your brain is 73% water. Hydration isn\'t optional — it\'s intelligence.', tags: ['health'] },
+  { text: '💙 Every drop counts. Your body is grateful for every sip you give it.', tags: [] },
+
+  /* UNIVERSAL */
+  { text: '❤️ You showed up for yourself today. That\'s the whole game.', tags: [] },
+  { text: '💜 Be as kind to yourself as you would be to someone you genuinely love.', tags: [] },
+  { text: '✨ You are doing better than you think. I promise.', tags: [] },
+  { text: '🌸 Every step forward — however small — is still forward.', tags: [] },
+  { text: '🤍 Healing and progress are not linear. You\'re still on track.', tags: [] },
+  { text: '⭐ NutriCare believes in you. Today and every day.', tags: [] },
+  { text: '💚 Consistency over intensity. You\'re building something real and lasting.', tags: [] },
+  { text: '🌿 Your body is doing its best for you. Return the favour with patience.', tags: [] },
+  { text: '🫶 You deserve to feel well. Not as a reward — just because you exist.', tags: [] },
+  { text: '💛 Some days the win is just making it to the end. Today counts.', tags: [] },
+  { text: '🌱 You planted seeds today that you\'ll harvest in ways you can\'t see yet.', tags: [] },
+  { text: '🤗 The fact that you\'re tracking means you care. That\'s already love.', tags: [] },
+  { text: '✨ Imperfect action beats perfect inaction every single time.', tags: [] },
+  { text: '💖 Your worth is not measured in calories. It never was.', tags: [] },
+  { text: '🌊 Hard days are part of the journey. You\'re still in it — that\'s what matters.', tags: [] },
+  { text: '🦋 Change is slow and then suddenly it\'s not. Keep going.', tags: [] },
+  { text: '💪 Every version of you that survived a hard day is proof you can do this too.', tags: [] },
+  { text: '🌟 You don\'t need to be perfect. You just need to keep trying.', tags: [] },
+  { text: '🫀 Taking care of your body is one of the deepest forms of self-respect.', tags: [] },
+  { text: '🍀 Today is a good day to be kind to yourself. So is every day.', tags: [] },
+];
+
+/**
+ * Returns a goal-aware, time-of-day-aware, non-repeating motivational quote.
+ * Scoring: +2 per matching goal, +1 for time-of-day match, +0 universal.
+ * Last 3 shown are excluded from candidates to improve perceived variety.
+ */
+function fmhGetQuote() {
+  const goals   = (typeof S !== 'undefined' && Array.isArray(S.goals)) ? S.goals : [];
+  const hour    = new Date().getHours();
+  const timeTag = hour < 12 ? 'morning' : hour < 17 ? 'afternoon' : 'evening';
+
+  const scored = FMH_QUOTES.map((q, i) => ({
+    text:  q.text,
+    index: i,
+    score: q.tags.reduce((acc, tag) => {
+      if (goals.includes(tag)) return acc + 2;
+      if (tag === timeTag)     return acc + 1;
+      return acc;
+    }, 0),
+  }));
+
+  const maxScore   = Math.max(...scored.map(q => q.score));
+  const topTier    = scored.filter(q => q.score === maxScore);
+  const candidates = topTier.length > 3
+    ? topTier.filter(q => !fmh_state.recentQuotes.includes(q.index))
+    : topTier;
+
+  const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+  fmh_state.recentQuotes.push(chosen.index);
+  if (fmh_state.recentQuotes.length > 3) fmh_state.recentQuotes.shift();
+  return chosen.text;
+}
+
+/**
+ * Shows a brief full-screen celebration overlay for streak milestones.
+ * pointer-events: none — never blocks interaction.
+ * Each milestone fires at most once per session (tracked in celebratedStreaks).
+ */
+function fmhCheckMilestone(streak) {
+  const milestones = {
+     3: { emoji: '🔥', text: '3-day streak — you\'re on fire!' },
+     7: { emoji: '⭐', text: '7 days strong — incredible!' },
+    14: { emoji: '💛', text: '14 days — golden streak unlocked!' },
+    30: { emoji: '🏆', text: '30 days — you are unstoppable.' },
+  };
+  const m = milestones[streak];
+  if (!m || fmh_state.celebratedStreaks.has(streak)) return;
+  fmh_state.celebratedStreaks.add(streak);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'fmh-milestone';
+  overlay.innerHTML = `<div class="fmh-milestone-inner">
+    <span class="fmh-milestone-emoji">${m.emoji}</span>
+    <span class="fmh-milestone-text">${m.text}</span>
+  </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 3500);
+}
+
+/**
+ * Spawns one heart from the LEFT or RIGHT edge.
+ * Sides alternate each spawn; first spawn is randomised.
+ *
+ * LEFT  zone: 2–6 % from left edge   → uses fmh-from-left keyframe (drifts right)
+ * RIGHT zone: 90–95 % from left edge → uses fmh-from-right keyframe (drifts left)
+ */
+function fmhSpawn() {
+  if (fmh_state.activeHeart) return;
+
+  const tier  = fmhGetTier();
+  const viewW = window.innerWidth;
+
+  // Strict alternation with random first side
+  const side = fmh_state.lastSide === 'left'  ? 'right'
+             : fmh_state.lastSide === 'right' ? 'left'
+             : Math.random() < 0.5            ? 'left' : 'right';
+  fmh_state.lastSide = side;
+
+  // Narrow band at the edge; small variance so it's not pixel-identical each time
+  const spawnX = side === 'left'
+    ? viewW * (0.02 + Math.random() * 0.04)   // 2–6 % from left
+    : viewW * (0.90 + Math.random() * 0.05);  // 90–95 % from left
+
+  const duration = 9000 + Math.random() * 5000;  // 9–14 s: slow, ambient
+
+  const el = document.createElement('div');
+  el.className   = `fmh ${tier.cssClass}`;
+  el.textContent = tier.emoji;
+  el.setAttribute('data-tip', tier.tip);
+  el.style.left              = `${spawnX}px`;
+  el.style.animationName     = side === 'left' ? 'fmh-from-left' : 'fmh-from-right';
+  el.style.animationDuration = `${duration}ms`;
+
+  // { once: true } — fires at most once per heart; prevents double-fire on
+  // mobile where both touchstart and click fire for the same tap.
+  el.addEventListener('click',      fmhOnClick, { once: true });
+  el.addEventListener('touchstart', fmhOnClick, { once: true, passive: true });
+
+  // Natural cleanup when animation completes without a click
+  el.addEventListener('animationend', () => {
+    el.remove();
+    if (fmh_state.activeHeart === el) fmh_state.activeHeart = null;
+  }, { once: true });
+
+  document.body.appendChild(el);
+  fmh_state.activeHeart = el;
+
+  if (typeof S !== 'undefined') fmhCheckMilestone(S.streak || 0);
+}
+
+/**
+ * Creates 6–9 burst particles at the click point, biased inward
+ * (toward screen centre) to reinforce the edge→centre visual language.
+ *
+ * --tx / --ty are JS-computed pixel offsets fed to the CSS keyframe,
+ * avoiding CSS trig (cos/sin) for full cross-browser compatibility.
+ */
+function fmhBurst(originX, originY, side) {
+  const count     = 6 + Math.floor(Math.random() * 4);
+  const baseStep  = (Math.PI * 2) / count;
+  const rotOffset = Math.random() * Math.PI * 2;
+  // Shift the whole burst ~17° toward the centre of the screen
+  const inwardBias = side === 'left' ? 0.3 : -0.3;
+
+  const burstEmojis = ['❤️','🩷','💕','✨','💗','🌸','💫','🤍','💛','🌟'];
+
+  for (let i = 0; i < count; i++) {
+    const angle = baseStep * i + rotOffset + inwardBias + (Math.random() - 0.5) * 0.698;
+    const dist  = 50 + Math.random() * 50;
+    const tx    = Math.cos(angle) * dist;
+    const ty    = Math.sin(angle) * dist;
+    const delay = Math.random() * 65;
+
+    const p         = document.createElement('div');
+    p.className     = 'fmh-burst';
+    p.textContent   = burstEmojis[Math.floor(Math.random() * burstEmojis.length)];
+    p.style.left    = `${originX - 10}px`;
+    p.style.top     = `${originY - 10}px`;
+    p.style.setProperty('--tx', `${tx.toFixed(1)}px`);
+    p.style.setProperty('--ty', `${ty.toFixed(1)}px`);
+    p.style.animationDelay = `${delay}ms`;
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 870);
+  }
+}
+
+/**
+ * Click/touch handler. Captures position → removes heart with micro-pop →
+ * spawns burst → shows personalised quote.
+ */
+function fmhOnClick(e) {
+  e.stopPropagation();
+  const src    = e.changedTouches?.[0] ?? e;
+  const clickX = src.clientX ?? window.innerWidth  / 2;
+  const clickY = src.clientY ?? window.innerHeight / 2;
+  const side   = fmh_state.lastSide ?? 'left';
+  const heart  = fmh_state.activeHeart;
+
+  fmh_state.activeHeart = null;  // null first to block re-entry
+
+  if (heart) {
+    // Micro-pop: brief scale-up before the node is removed.
+    // Two rAF calls ensure the scale actually paints before deletion.
+    heart.style.transition = 'transform 90ms ease-out, opacity 90ms ease-out';
+    heart.style.transform  = 'scale(1.5)';
+    heart.style.opacity    = '0';
+    requestAnimationFrame(() => requestAnimationFrame(() => heart.remove()));
+  }
+
+  fmhBurst(clickX, clickY, side);
+  showNotif(fmhGetQuote(), 5000);
+}
+
+/**
+ * Schedules the next spawn with a fresh random 90–180 s interval.
+ * Recursive setTimeout (not setInterval) keeps each interval independently
+ * randomised so the timing never becomes predictable.
+ *
+ * Guards before spawning:
+ *  1. System still marked running
+ *  2. Dashboard (s6) is the active screen
+ *  3. No heart currently visible
+ *  4. Onboarding complete
+ *  5. Mood fullscreen is not open
+ */
+function fmhScheduleNext() {
+  const ms = 90_000 + Math.random() * 90_000;  // 1.5 – 3 min
+
+  fmh_state.scheduleTimer = setTimeout(() => {
+    const dashActive = document.getElementById('s6')?.classList.contains('active');
+    const onboarded  = typeof S !== 'undefined' && S.onboardDone;
+    const noHeart    = !fmh_state.activeHeart;
+    const moodClosed = !document.getElementById('mood-fs')?.classList.contains('open');
+
+    if (fmh_state.running && dashActive && onboarded && noHeart && moodClosed) {
+      fmhSpawn();
+    }
+    if (fmh_state.running) fmhScheduleNext();
+
+  }, ms);
+}
+
+/** Activates the system. Idempotent — safe to call when already running. */
+function fmhStart() {
+  if (fmh_state.running) return;
+  fmh_state.running = true;
+  fmhScheduleNext();
+}
+
+/** Deactivates the system, cancels timer, gracefully fades any visible heart. */
+function fmhStop() {
+  fmh_state.running = false;
+  if (fmh_state.scheduleTimer !== null) {
+    clearTimeout(fmh_state.scheduleTimer);
+    fmh_state.scheduleTimer = null;
+  }
+  if (fmh_state.activeHeart) {
+    const h = fmh_state.activeHeart;
+    fmh_state.activeHeart = null;
+    h.style.transition = 'opacity 400ms ease';
+    h.style.opacity    = '0';
+    setTimeout(() => h.remove(), 450);
+  }
+}
+/* ─── END: FLOATING HEART MOTIVATION SYSTEM ─────────────────────────── */
+
+/* ─── RESTORE UI SELECTIONS ─── */
+function restoreUI(){
+  S.goals.forEach(g=>{document.querySelectorAll('.gc').forEach(el=>{const m=el.getAttribute('onclick')?.match(/toggleGoal\('(\w+)'/)?.[1];if(m===g)el.classList.add('sel');});});
+  if(S.goals.includes('gain')||S.goals.includes('muscle'))document.getElementById('tw-reveal').style.display='block';
+  document.querySelectorAll('#s3 .choice').forEach(el=>{const m=el.getAttribute('onclick')?.match(/selOne\('activity','(\w+)'/)?.[1];if(m&&m===S.activity)el.classList.add('sel');});
+  S.conditions.forEach(c=>{document.querySelectorAll('.cp').forEach(el=>{const m=el.getAttribute('onclick')?.match(/toggleCond\('(\w+)'/)?.[1];if(m===c)el.classList.add('sel');});});
+  document.querySelectorAll('#s1 .choice').forEach(el=>{const m=el.getAttribute('onclick')?.match(/selOne\('gender','(\w+)'/)?.[1];if(m&&m===S.gender)el.classList.add('sel');});
+  if(S.age)document.getElementById('i-age').value=S.age;
+  if(S.weight)document.getElementById('i-weight').value=S.weight;
+  if(S.height)document.getElementById('i-height').value=S.height;
+  if(S.targetWeight){document.getElementById('i-target').value=S.targetWeight;document.getElementById('i-target2').value=S.targetWeight;}
+  if(S.healthNotes)document.getElementById('health-notes').value=S.healthNotes;
+  if(S.reminders){if(!S.reminders.w)document.getElementById('tog-w').classList.remove('on');if(!S.reminders.m)document.getElementById('tog-m').classList.remove('on');if(S.reminders.e)document.getElementById('tog-e').classList.add('on');}
+}
+
+/* ─── BOOT ─── */
+(function boot(){
+  dailyReset();createSkyHearts();restoreUI();
+  setTimeout(()=>{
+    document.getElementById('loader').style.display='none';
+    if(S.onboardDone){
+      populateDash();populateRecs();populateProfile();
+      document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      document.getElementById('s6').classList.add('active');
+      const h=new Date().getHours();
+      const greet=h<12?'Good morning! Ready for a great day? ☀️':h<17?'Good afternoon! Hope you\'re nourishing yourself 🌿':'Good evening! How are you feeling? 🌙';
+      setTimeout(()=>showNotif(greet,4000),600);
+      // Activate floating heart motivation system — dashboard is now live
+      fmhStart();
+    } else {
+      document.getElementById('s1').classList.add('active');
+    }
+  },1500);
+})();
+</script>
+</body>
+</html>
